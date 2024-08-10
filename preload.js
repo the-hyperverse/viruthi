@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
     sendForm: (formData) => {
@@ -44,5 +44,3 @@ const cleanup = () => {
 
 // Call cleanup when appropriate (e.g., before renderer process is unloaded)
 window.addEventListener('beforeunload', cleanup);
-
-console.log('loaded');
