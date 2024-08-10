@@ -2,17 +2,21 @@
   "name": "viruthi",
   "version": "0.0.1",
   "description": "Assest tracter",
-  "main": "main.js",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron dist/main.js",
+    "build": "tsc",
+    "dev": "tsc && electron dist/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "type": "module",
   "author": "Endran",
   "license": "ISC",
   "devDependencies": {
+    "@types/electron": "^1.6.10",
+    "@types/node": "^22.2.0",
     "electron": "^31.3.1",
-    "electron-reload": "^2.0.0-alpha.1"
+    "electron-reload": "^2.0.0-alpha.1",
+    "typescript": "^5.5.4"
   },
   "dependencies": {
     "express": "^4.19.2",

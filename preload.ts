@@ -1,7 +1,9 @@
-const { contextBridge, ipcRenderer } = require('electron');
+import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { FormSubmissionReplyCallback, DataRetrievedCallback, FormData } from './models'
+
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    sendForm: (formData) => {
+    sendForm: (formData: FormData) => {
         try {
             ipcRenderer.send('form-submission', formData);
             console.log('sending form 2');
@@ -9,10 +11,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
             console.error('1', err);
         }
     },
-    onFormSubmissionReply: (callback) => {
+    onFormSubmissionReply: (callback: FormSubmissionReplyCallback) => {
         ipcRenderer.on('form-submission-reply', (event, ...args) => {
             try {
-                callback(event, ...args);
+                callback(event, args[0]);
             } catch (err) {
                 console.error('2', err);
             }
@@ -25,10 +27,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
             console.error('3', err);
         }
     },
-    onDataRetrieved: (callback) => {
+    onDataRetrieved: (callback: DataRetrievedCallback) => {
         ipcRenderer.on('get-data-reply', (event, ...args) => {
             try {
-                callback(event, ...args);
+                callback(event, args[0]);
             } catch (err) {
                 console.error('4', err);
             }

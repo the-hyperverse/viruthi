@@ -1,15 +1,12 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import sqlite3 from 'sqlite3';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
+import { FormData, UserData } from './models'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-let db;
+let db: sqlite3.Database;
 
 try {
-    db = new sqlite3.Database(join(__dirname, 'viruthi.db'), (err) => {
+    db = new sqlite3.Database(join(__dirname, '../viruthi.db'), (err: Error | null) => {
         if (err) {
             console.error('Failed to open database:', err.message);
         } else {
@@ -18,14 +15,14 @@ try {
     });
 
     db.serialize(() => {
-        db.run("CREATE TABLE IF NOT EXISTS user_data (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)", (err) => {
+        db.run("CREATE TABLE IF NOT EXISTS user_data (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)", (err: Error | null) => {
             if (err) {
                 console.error('Failed to create table:', err.message);
             }
         });
     });
 } catch (error) {
-    console.error('Database initialization error:', error.message);
+    console.error('Database initialization error:', (error as Error).message);
 }
 
 const createWindow = () => {
@@ -35,11 +32,11 @@ const createWindow = () => {
         webPreferences: {
             preload: join(__dirname, 'preload.js'),
             contextIsolation: true,
-            nodeIntegration: false,
-            enableRemoteModule: false
+            nodeIntegration: false
+//            enableRemoteModule: false
         }
     });
-    win.loadFile('index.html');
+    win.loadFile(join(__dirname, '../index.html'));
 };
 
 app.whenReady().then(() => {
@@ -53,7 +50,7 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         if (db) {
-            db.close((err) => {
+            db.close((err: Error | null) => {
                 if (err) {
                     console.error('Failed to close database:', err.message);
                 } else {
@@ -65,10 +62,10 @@ app.on('window-all-closed', () => {
     }
 });
 
-ipcMain.on('form-submission', (event, formData) => {
+ipcMain.on('form-submission', (event, formData: FormData) => {
     const { name, age } = formData;
     console.log('sending form 3');
-    db.run("INSERT INTO user_data (name, age) VALUES (?, ?)", [name, age], function (err) {
+    db.run("INSERT INTO user_data (name, age) VALUES (?, ?)", [name, age], function (err: Error | null) {
         if (err) {
             console.error('Failed to insert data:', err.message);
             event.reply('form-submission-reply', { success: false });
@@ -80,7 +77,8 @@ ipcMain.on('form-submission', (event, formData) => {
 });
 
 ipcMain.on('get-data', (event) => {
-    db.all("SELECT * FROM user_data", [], (err, rows) => {
+    //Array<{ id: number; name: string; age: number }
+    db.all("SELECT * FROM user_data", [], (err: Error | null, rows: UserData[]) => {
         if (err) {
             console.error('Failed to retrieve data:', err.message);
             event.reply('get-data-reply', []);
