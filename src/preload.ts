@@ -6,7 +6,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     sendForm: (formData: FormData) => {
         try {
             ipcRenderer.send('form-submission', formData);
-            console.log('sending form 2');
         } catch (err) {
             console.error('1', err);
         }
@@ -36,6 +35,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
             }
         });
     },
+    //TODO: this should be removed
     getNonce: async () => {
         return ipcRenderer.invoke('get-nonce');
     }

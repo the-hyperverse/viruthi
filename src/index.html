@@ -37,6 +37,13 @@
         (async () => {
             const nonce = await window.electronAPI.getNonce();            
             // Apply nonce to inline scripts and styles
+            // TODO: nonce should not be updated this way
+
+            const meta = document.createElement('meta');
+            meta.httpEquiv = 'Content-Security-Policy';
+            meta.content = `default-src 'self'; style-src 'self' 'nonce-${nonce}'; script-src 'self' 'nonce-${nonce}'; img-src 'self'; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none';`;
+            document.head.appendChild(meta);
+
             document.querySelectorAll('style').forEach(style => style.setAttribute('nonce', nonce));
             document.querySelectorAll('script').forEach(script => script.setAttribute('nonce', nonce));
         })();
@@ -52,7 +59,5 @@
 
     <button type="button" id="retrieve">Retrieve Data</button>
     <ul id="data-list"></ul>
-
-    <script src="renderer.js"></script>
 </body>
 </html>

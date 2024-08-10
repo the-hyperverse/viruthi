@@ -8,6 +8,7 @@ declare global {
             onFormSubmissionReply: (callback: (event: Electron.IpcRendererEvent, response: FormSubmissionReply) => void) => void;
             requestData: () => void;
             onDataRetrieved: (callback: (event: Electron.IpcRendererEvent, rows: UserData[]) => void) => void;
+            getNonce: () => void;
         };
     }
 }

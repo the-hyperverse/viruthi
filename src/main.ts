@@ -12,7 +12,7 @@ try {
         if (err) {
             console.error('Failed to open database:', err.message);
         } else {
-            console.log('Connected to the database.');
+            console.log('----Connected to the database.');
         }
     });
 
@@ -39,15 +39,15 @@ const createWindow = () => {
     });
 
     const nonce = randomBytes(16).toString('base64');
-        // Set up Content Security Policy with the generated nonce
-        win.webContents.on('did-finish-load', () => {
-            win.webContents.executeJavaScript(`
-                const meta = document.createElement('meta');
-                meta.httpEquiv = 'Content-Security-Policy';
-                meta.content = "default-src 'self'; style-src 'self' 'nonce-${nonce}'; script-src 'self' 'nonce-${nonce}'; img-src 'self'; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none';";
-                document.head.appendChild(meta);
-            `);
-        });
+        // // Set up Content Security Policy with the generated nonce
+        // win.webContents.on('did-finish-load', () => {
+        //     win.webContents.executeJavaScript(`
+        //         const meta = document.createElement('meta');
+        //         meta.httpEquiv = 'Content-Security-Policy';
+        //         meta.content = "default-src 'self'; style-src 'self' 'nonce-${nonce}'; script-src 'self' 'nonce-${nonce}'; img-src 'self'; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none';";
+        //         document.head.appendChild(meta);
+        //     `);
+        // });
 
     win.loadFile(path.join(rootDir, 'dist', 'index.html'));
 
@@ -70,7 +70,7 @@ app.on('window-all-closed', () => {
                 if (err) {
                     console.error('Failed to close database:', err.message);
                 } else {
-                    console.log('Database closed.');
+                    console.log('----Database closed.');
                 }
             });
         }
@@ -80,20 +80,18 @@ app.on('window-all-closed', () => {
 
 ipcMain.on('form-submission', (event, formData: FormData) => {
     const { name, age } = formData;
-    console.log('sending form 3');
+
     db.run("INSERT INTO user_data (name, age) VALUES (?, ?)", [name, age], function (err: Error | null) {
         if (err) {
             console.error('Failed to insert data:', err.message);
             event.reply('form-submission-reply', { success: false });
         } else {
-            console.log(`A row has been inserted with rowid ${this.lastID}`);
             event.reply('form-submission-reply', { success: true, id: this.lastID });
         }
     });
 });
 
 ipcMain.on('get-data', (event) => {
-    //Array<{ id: number; name: string; age: number }
     db.all("SELECT * FROM user_data", [], (err: Error | null, rows: UserData[]) => {
         if (err) {
             console.error('Failed to retrieve data:', err.message);

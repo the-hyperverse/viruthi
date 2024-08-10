@@ -15,7 +15,6 @@ document.getElementById('user-form')?.addEventListener('submit', (event: Event) 
         return;
     }
 
-    console.log('sending form');
     window.electronAPI.sendForm({ name, age });
 });
 
