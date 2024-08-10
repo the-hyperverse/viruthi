@@ -36,13 +36,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
     }
 });
 
-// // Example cleanup function
-// const cleanup = () => {
-//     ipcRenderer.removeAllListeners('form-submission-reply');
-//     ipcRenderer.removeAllListeners('get-data-reply');
-// };
+// Example cleanup function
+const cleanup = () => {
+    ipcRenderer.removeAllListeners('form-submission-reply');
+    ipcRenderer.removeAllListeners('get-data-reply');
+};
 
-// // Call cleanup when appropriate (e.g., before renderer process is unloaded)
-// window.addEventListener('beforeunload', cleanup);
+// Call cleanup when appropriate (e.g., before renderer process is unloaded)
+window.addEventListener('beforeunload', cleanup);
 
 console.log('loaded');
