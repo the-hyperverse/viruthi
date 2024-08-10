@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
+import { randomBytes } from 'crypto';
 import sqlite3 from 'sqlite3';
 import path from 'path';
 import { FormData, UserData } from './models'
@@ -34,10 +35,24 @@ const createWindow = () => {
             preload: path.join(rootDir, 'dist', 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false
-//            enableRemoteModule: false
         }
     });
-    win.loadFile(path.join(rootDir, 'index.html'));
+
+    const nonce = randomBytes(16).toString('base64');
+        // Set up Content Security Policy with the generated nonce
+        win.webContents.on('did-finish-load', () => {
+            win.webContents.executeJavaScript(`
+                const meta = document.createElement('meta');
+                meta.httpEquiv = 'Content-Security-Policy';
+                meta.content = "default-src 'self'; style-src 'self' 'nonce-${nonce}'; script-src 'self' 'nonce-${nonce}'; img-src 'self'; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none';";
+                document.head.appendChild(meta);
+            `);
+        });
+
+    win.loadFile(path.join(rootDir, 'dist', 'index.html'));
+
+    // Send the nonce to the renderer process
+    ipcMain.handle('get-nonce', () => nonce);
 };
 
 app.whenReady().then(() => {

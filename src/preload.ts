@@ -35,6 +35,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
                 console.error('4', err);
             }
         });
+    },
+    getNonce: async () => {
+        return ipcRenderer.invoke('get-nonce');
     }
 });
 

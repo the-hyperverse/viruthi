@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viruthi</title>
-    <style>
+    <style nonce="dummy">
         /* Basic styling for better UI */
         body {
             font-family: Arial, sans-serif;
@@ -33,6 +33,14 @@
             border: 1px solid #ddd;
         }
     </style>
+    <script>
+        (async () => {
+            const nonce = await window.electronAPI.getNonce();            
+            // Apply nonce to inline scripts and styles
+            document.querySelectorAll('style').forEach(style => style.setAttribute('nonce', nonce));
+            document.querySelectorAll('script').forEach(script => script.setAttribute('nonce', nonce));
+        })();
+    </script>
 </head>
 <body>
     <h1>Viruthi</h1>
@@ -45,6 +53,6 @@
     <button type="button" id="retrieve">Retrieve Data</button>
     <ul id="data-list"></ul>
 
-    <script src="dist/renderer.js"></script>
+    <script src="renderer.js"></script>
 </body>
 </html>

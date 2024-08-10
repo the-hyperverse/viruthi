@@ -2,22 +2,59 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Main",
-      "type": "pwa-node",
+      "name": "Electron: Main Process",
+      "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/dist/main.js",
+      "preLaunchTask": "build",
       "outFiles": [
         "${workspaceFolder}/dist/**/*.js"
       ],
-      "preLaunchTask": "npm: build"
+      "protocol": "inspector",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "runtimeArgs": [
+        "."
+      ],
+      "port": 9222,
+      "console": "integratedTerminal",
+      "restart": true
     },
     {
-      "name": "Renderer",
-      "type": "chrome",
+      "name": "Electron: Renderer Process",
+      "type": "node",
       "request": "launch",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/dist",
-      "preLaunchTask": "npm: build"
+      "protocol": "inspector",
+      "port": 9223,
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "runtimeArgs": [
+        "${workspaceFolder}/dist/main.js",
+        "--remote-debugging-port=9223"
+      ],
+      "webRoot": "${workspaceFolder}/src",
+      "preLaunchTask": "build",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "console": "integratedTerminal"
     }
-  ]
+  ],
+  "compounds": [
+    {
+      "name": "Electron: Main and Renderer",
+      "configurations": [
+        "Electron: Main Process",
+        "Electron: Renderer Process"
+      ]
+    }
+  ],
+  "tasks": {
+    "build": {
+      "command": "npm run build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$tsc"]
+    }
+  }
 }
