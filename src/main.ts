@@ -1,12 +1,13 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import sqlite3 from 'sqlite3';
-import { join } from 'path';
+import path from 'path';
 import { FormData, UserData } from './models'
 
+const rootDir = path.resolve(__dirname, '..');
 let db: sqlite3.Database;
 
 try {
-    db = new sqlite3.Database(join(__dirname, '../viruthi.db'), (err: Error | null) => {
+    db = new sqlite3.Database(path.join(rootDir, 'db', 'viruthi.db'), (err: Error | null) => {
         if (err) {
             console.error('Failed to open database:', err.message);
         } else {
@@ -30,13 +31,13 @@ const createWindow = () => {
         width: 800,
         height: 800,
         webPreferences: {
-            preload: join(__dirname, 'preload.js'),
+            preload: path.join(rootDir, 'dist', 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false
 //            enableRemoteModule: false
         }
     });
-    win.loadFile(join(__dirname, '../index.html'));
+    win.loadFile(path.join(rootDir, 'index.html'));
 };
 
 app.whenReady().then(() => {
