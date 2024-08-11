@@ -1,4 +1,5 @@
-import { FormSubmissionReply, UserData } from './models'
+import log from 'electron-log/renderer';
+import { FormSubmissionReply, UserData } from './models/models'
 
 // Handle form submission
 document.getElementById('user-form')?.addEventListener('submit', (event: Event) => {

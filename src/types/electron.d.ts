@@ -1,5 +1,5 @@
 import 'electron';
-import { FormData, FormSubmissionReply, UserData } from '../models'
+import { FormData, FormSubmissionReply, UserData } from '../models/models'
 
 declare global {
     interface Window {

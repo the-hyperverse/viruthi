@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { FormSubmissionReplyCallback, DataRetrievedCallback, FormData } from './models'
+import { FormSubmissionReplyCallback, DataRetrievedCallback, FormData } from './models/models'
 
 
 contextBridge.exposeInMainWorld('electronAPI', {
