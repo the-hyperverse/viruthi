@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    mode: 'development', //'production'
+    mode: 'development', //'development' or 'production'
     entry: './src/renderer.ts', // Entry point for the renderer process
     target: 'web', // Targeting browser environment
     devtool: 'source-map', // instead of 'eval-source-map'
@@ -26,6 +26,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src/index.html', // Template HTML file
             filename: 'index.html',
-        }),
+            inject: 'body', // Inject scripts at the bottom of the body
+        })
     ],
 };
