@@ -1,37 +1,24 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { FormSubmissionReplyCallback, DataRetrievedCallback, FormData } from './models/models'
-
+import { AssetClass } from './models/models';
+//import log from 'electron-log';
+//TODO: electron log is not working in preload
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    sendForm: (formData: FormData) => {
+    getEquities: (): void => {
         try {
-            ipcRenderer.send('form-submission', formData);
+            ipcRenderer.send('get-equities');
         } catch (err) {
-            console.error('1', err);
+            //log.error('3', err);
+            console.error("Error ", err)
         }
     },
-    onFormSubmissionReply: (callback: FormSubmissionReplyCallback) => {
-        ipcRenderer.on('form-submission-reply', (event, ...args) => {
+    replyGetEquities: (callback: (event: IpcRendererEvent, equities: AssetClass[]) => void) => {
+        ipcRenderer.on('reply-get-equities', (event, equities: AssetClass[]) => {
             try {
-                callback(event, args[0]);
+                callback(event, equities);
             } catch (err) {
-                console.error('2', err);
-            }
-        });
-    },
-    requestData: () => {
-        try {
-            ipcRenderer.send('get-data');
-        } catch (err) {
-            console.error('3', err);
-        }
-    },
-    onDataRetrieved: (callback: DataRetrievedCallback) => {
-        ipcRenderer.on('get-data-reply', (event, ...args) => {
-            try {
-                callback(event, args[0]);
-            } catch (err) {
-                console.error('4', err);
+                //log.error('4', err);
+                console.error("Error ", err)
             }
         });
     },
@@ -43,8 +30,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
 // Example cleanup function
 const cleanup = () => {
-    ipcRenderer.removeAllListeners('form-submission-reply');
-    ipcRenderer.removeAllListeners('get-data-reply');
+    ipcRenderer.removeAllListeners('get-equities');
+    ipcRenderer.removeAllListeners('reply-get-equities');
+    ipcRenderer.removeAllListeners('get-nonce');
 };
 
 // Call cleanup when appropriate (e.g., before renderer process is unloaded)

@@ -1,0 +1,82 @@
+{
+    "assetClasses": [
+        {
+            "id": 1,
+            "name": "Equity",
+            "symbol": "EQ",
+            "unit": ""
+        },
+        {
+            "id": 2,
+            "name": "Mutual Fund",
+            "symbol": "MF",
+            "unit": ""
+        },
+        {
+            "id": 3,
+            "name": "Gold",
+            "symbol": "Au",
+            "unit": "gram"
+        },
+        {
+            "id": 4,
+            "name": "Real Estate",
+            "symbol": "R.Est.",
+            "unit": "sq.ft"
+        },
+        {
+            "id": 5,
+            "name": "Corporte Bond",
+            "symbol": "C.Bond",
+            "unit": ""
+        },
+        {
+            "id": 6,
+            "name": "Sovereign Bond",
+            "symbol": "S.Bond",
+            "unit": ""
+        },
+        {
+            "id": 7,
+            "name": "Debt",
+            "symbol": "Debt",
+            "unit": ""
+        }
+    ],
+    "golds": [
+        {
+            "id": 1,
+            "name": "Physical 22k",
+            "karat": 22
+        },
+        {
+            "id": 1,
+            "name": "Physical 24k",
+            "karat": 24
+        },
+        {
+            "id": 1,
+            "name": "Digital",
+            "karat": 24
+        },
+        {
+            "id": 1,
+            "name": "SGB",
+            "karat": 24
+        }
+    ],
+    "markets": [
+        {
+            "id": 1,
+            "name": "India",
+            "symbol": "IN",
+            "currency": "INR"
+        },
+        {
+            "id": 2,
+            "name": "USA",
+            "symbol": "US",
+            "currency": "USD"
+        }
+    ]
+}

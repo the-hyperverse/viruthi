@@ -1,13 +1,13 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { randomBytes } from 'crypto';
-import sqlite3 from 'sqlite3';
 
-import { FormData } from './models/models';
 import { PRELOAD_JS_PATH, INDEX_HTML_PATH } from './models/constants';
-import DBService from './services/db.service';
-import * as logService from './services/log.service';
+import { TableService } from './services/tables/table.service';
+import * as logService from './services/log/log.service';
+import * as controller from './controllers/main.controller';
 
-logService.initializeLogs()
+logService.initializeLogs();
+TableService.getInstance().prepareTables();
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -24,8 +24,6 @@ const createWindow = () => {
     win.maximize();
     win.show();
     win.loadFile(INDEX_HTML_PATH);
-
-    DBService.createTable("CREATE TABLE IF NOT EXISTS user_data (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)");
 
     const nonce = randomBytes(16).toString('base64');
     // // Set up Content Security Policy with the generated nonce
@@ -52,31 +50,9 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
-        DBService.close();
+        TableService.getInstance().closeDB();
         app.quit();
     }
 });
 
-ipcMain.on('form-submission', (event, formData: FormData) => {
-    const { name, age } = formData;
-
-    DBService.insertRow("INSERT INTO user_data (name, age) VALUES (?, ?)", [name, age], function (this: sqlite3.RunResult, err: Error | null) {
-        if (err) {
-            console.error('Failed to insert data:', err.message);
-            event.reply('form-submission-reply', { success: false });
-        } else {
-            event.reply('form-submission-reply', { success: true, id: this.lastID });
-        }
-    });
-});
-
-ipcMain.on('get-data', (event) => {
-    DBService.getRows("SELECT * FROM user_data", (err: Error | null, rows?: []) => {
-        if (err) {
-            console.error('Failed to retrieve data:', err.message);
-            event.reply('get-data-reply', []);
-        } else {
-            event.reply('get-data-reply', rows);
-        }
-    })
-});
+controller.registerRoutes();

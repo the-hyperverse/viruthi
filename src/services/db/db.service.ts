@@ -1,8 +1,8 @@
 import sqlite3 from 'sqlite3';
 import log from 'electron-log/main';
-import { DB_PATH } from '../models/constants';
+import { DB_PATH } from '../../models/constants';
 
-class DBService {
+export class DBService {
     private static instance: DBService;
     private db: sqlite3.Database;
 
@@ -28,12 +28,21 @@ class DBService {
         return DBService.instance;
     }
 
-    public createTable(cQ: string): void {
-        this.db.run(cQ, (err: Error | null) => {
-            if (err) {
-                log.error('Failed to create table:', err?.message);
-            }
+    public createTables(cQs: string[]): void {
+        this.db.serialize(() => {
+            this.db.run("begin transaction");
+            
+            cQs.forEach((cQ) => {
+                this.db.run(cQ, (err: Error | null) => {
+                    if (err) {
+                        log.error('Failed to create table:', err?.message);
+                    }
+                });
+            });
+
+            this.db.run("commit");
         });
+        log.debug('Tables are created.');
     }
 
     public getRows(sQ: string, callback: (err: Error | null, rows?: []) => void): void {
@@ -102,11 +111,9 @@ class DBService {
                 if (err) {
                     log.error('Failed to close database:', err.message);
                 } else {
-                    log.info('Database closed.');
+                    log.debug('Database closed.');
                 }
             });
         }
     }
 }
-
-export default DBService.getInstance();

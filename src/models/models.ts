@@ -1,20 +1,44 @@
-import { IpcRendererEvent } from "electron";
-
-export interface FormSubmissionReply {
-    success: boolean;
-    id?: number
-}
-
-export interface UserData {
+export interface Market {
     id: number;
     name: string;
-    age: number;
+    symbol: string;
+    currency: string;
 }
 
-export interface FormData {
+export interface AssetClass {
+    id: number;
     name: string;
-    age: number;
+    symbol: string;
+    unit: string;
 }
 
-export type FormSubmissionReplyCallback = (event: IpcRendererEvent, response: FormSubmissionReply) => void;
-export type DataRetrievedCallback = (event: IpcRendererEvent, rows: UserData[]) => void;
+export interface Gold {
+    id: number;
+    name: string;
+    karat: number;
+}
+
+export interface Equity {
+    isin: string;
+    name: string;
+    marketId: number;
+    symbol: string;
+}
+
+export interface MutualFund {
+    folioNumber: string;
+    name: string;
+    marketId: number;
+}
+
+export interface Holding {
+    id: number;
+    marketId: number;
+    assetClassId: number;
+    assetId: string;
+    rate: number;
+    quantity: number;
+    holdingDate: Date;
+    createdBy: number;
+    createdOn: Date;
+}
