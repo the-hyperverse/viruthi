@@ -1,0 +1,33 @@
+/* Basic styling for better UI */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+input,
+button {
+    padding: 10px;
+    margin: 5px 0;
+    display: block;
+    width: 100%;
+}
+
+#data-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#data-list li {
+    background-color: #f9f9f9;
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+}

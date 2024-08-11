@@ -1,41 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viruthi</title>
-    <style nonce="dummy">
-        /* Basic styling for better UI */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        input, button {
-            padding: 10px;
-            margin: 5px 0;
-            display: block;
-            width: 100%;
-        }
-        #data-list {
-            list-style-type: none;
-            padding: 0;
-        }
-        #data-list li {
-            background-color: #f9f9f9;
-            margin: 5px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-    </style>
+    <link id="styles-link" rel="stylesheet" href="assets/css/style.css" nonce="dummy">
     <script>
         (async () => {
-            const nonce = await window.electronAPI.getNonce();            
+            const nonce = await window.electronAPI.getNonce();
             // Apply nonce to inline scripts and styles
             // TODO: nonce should not be updated this way
 
@@ -44,11 +17,13 @@
             meta.content = `default-src 'self'; style-src 'self' 'nonce-${nonce}'; script-src 'self' 'nonce-${nonce}'; img-src 'self'; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none';`;
             document.head.appendChild(meta);
 
-            document.querySelectorAll('style').forEach(style => style.setAttribute('nonce', nonce));
+            // document.querySelectorAll('style').forEach(style => style.setAttribute('nonce', nonce));
             document.querySelectorAll('script').forEach(script => script.setAttribute('nonce', nonce));
+            document.getElementById('styles-link')?.setAttribute('nonce', nonce);
         })();
     </script>
 </head>
+
 <body>
     <h1>Viruthi</h1>
     <form id="user-form">
@@ -60,4 +35,7 @@
     <button type="button" id="retrieve">Retrieve Data</button>
     <ul id="data-list"></ul>
 </body>
+
+<!-- Scripts are injected by Webpack with nonce -->
+
 </html>
