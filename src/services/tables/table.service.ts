@@ -2,13 +2,16 @@ import log from 'electron-log/main';
 import { DBService } from "../db/db.service";
 import { AssetClass, Gold, Market } from '../../models/models';
 import * as staticData from "../../data/staticData.json";
+import { EquityTableService } from './equity.table.service';
 
 export class TableService {
     private static instance: TableService;
     private dbService: DBService;
+    private equityService: EquityTableService;
 
     private constructor() {
         this.dbService = DBService.getInstance();
+        this.equityService = EquityTableService.getInstance();
     }
 
     public static getInstance() {
@@ -24,7 +27,9 @@ export class TableService {
             throw new Error('Static data is empty.');
         }
     
-        //this.dbService.createTables([""])
+        this.dbService.createTables([
+            this.equityService.getCreateQuery()
+        ])
         log.info('Tables are created.')
     }
 

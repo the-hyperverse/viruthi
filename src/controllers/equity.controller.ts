@@ -1,10 +1,17 @@
 import { ipcMain } from 'electron';
-import { TableService } from '../services/tables/table.service';
+import { EquityTableService } from '../services/tables/equity.table.service';
 
 export function registerRoutes() {
-    ipcMain.on('get-equities', (event) => {
-        const data = TableService.getInstance().getAssetClasses()
-        event.reply('reply-get-equities', data);
+    ipcMain.on('get-equities', (event, args: { offset: number; limit: number }) => {
+        const { offset, limit } = args;
+        EquityTableService.getInstance().getAll(offset, limit, 
+            rows => {
+                if (rows) {
+                    //TODO: parse this rows. and Add these APIS to preload
+                    event.reply('reply-get-equities', rows);
+                }
+            }
+        );
     });
 }
 

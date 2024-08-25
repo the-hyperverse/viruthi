@@ -21,6 +21,7 @@ export interface Gold {
 export interface Equity {
     isin: string;
     name: string;
+    isinName: string;
     marketId: number;
     symbol: string;
 }

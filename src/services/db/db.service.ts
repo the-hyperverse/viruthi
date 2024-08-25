@@ -62,7 +62,7 @@ export class DBService {
         this.db.run(iQ, valList, callback);
     }
 
-    public insertRows(iQ: string, valList: any[][]): void {
+    public insertRows(iQ: string, models: any[]): void {
         // var params = [[1,2],[3,4],[5,6],[7,8]];
         // this.db.serialize(() => {
         //     this.db.run("begin transaction");
@@ -76,8 +76,8 @@ export class DBService {
         this.db.serialize(() => {
             this.db.run("begin transaction");
 
-            valList.forEach(row => {
-                this.db.run(iQ, row, (err: Error | null) => {
+            models.forEach(row => {
+                this.db.run(iQ, Object.values(row), (err: Error | null) => {
                     log.error('Failed to insert a row in bulk insert:', err?.message)
                 });
             });
