@@ -9,7 +9,7 @@ export interface AssetClass {
     id: number;
     name: string;
     symbol: string;
-    unit: string;
+    unit: string | null;
 }
 
 export interface Gold {
