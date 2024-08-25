@@ -4,13 +4,13 @@
             "id": 1,
             "name": "Equity",
             "symbol": "EQ",
-            "unit": ""
+            "unit": null
         },
         {
             "id": 2,
             "name": "Mutual Fund",
             "symbol": "MF",
-            "unit": ""
+            "unit": null
         },
         {
             "id": 3,
@@ -28,19 +28,19 @@
             "id": 5,
             "name": "Corporte Bond",
             "symbol": "C.Bond",
-            "unit": ""
+            "unit": null
         },
         {
             "id": 6,
             "name": "Sovereign Bond",
             "symbol": "S.Bond",
-            "unit": ""
+            "unit": null
         },
         {
             "id": 7,
             "name": "Debt",
             "symbol": "Debt",
-            "unit": ""
+            "unit": null
         }
     ],
     "golds": [
