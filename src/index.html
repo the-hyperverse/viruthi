@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Viruthi</title>
-    <link id="styles-link" rel="stylesheet" href="assets/css/style.css" nonce="dummy">
     <script>
         (async () => {
             const nonce = await window.electronAPI.getNonce();
@@ -17,25 +16,20 @@
             meta.content = `default-src 'self'; style-src 'self' 'nonce-${nonce}'; script-src 'self' 'nonce-${nonce}'; img-src 'self'; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none';`;
             document.head.appendChild(meta);
 
-            // document.querySelectorAll('style').forEach(style => style.setAttribute('nonce', nonce));
+            //document.querySelectorAll('style').forEach(style => style.setAttribute('nonce', nonce));
             document.querySelectorAll('script').forEach(script => script.setAttribute('nonce', nonce));
-            document.getElementById('styles-link')?.setAttribute('nonce', nonce);
+            document.querySelectorAll('link').forEach(script => script.setAttribute('nonce', nonce));
+            //document.getElementById('styles-link')?.setAttribute('nonce', nonce);
         })();
     </script>
+    <!-- style sheet links are injected by Webpack -->
 </head>
 
 <body>
-    <h1>Viruthi</h1>
-    <form id="user-form">
-        <input type="text" id="name" placeholder="Name" required />
-        <input type="number" id="age" placeholder="Age" required />
-        <button type="submit">Submit</button>
-    </form>
-
-    <button type="button" id="retrieve">Retrieve Data</button>
-    <ul id="data-list"></ul>
+    <div id="app"></div>
+    <!-- <h1>Viruthi</h1>-->
 </body>
 
-<!-- Scripts are injected by Webpack with nonce -->
+    <!-- Scripts are injected by Webpack -->
 
 </html>

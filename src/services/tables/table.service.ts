@@ -1,7 +1,7 @@
 import log from 'electron-log/main';
 import { DBService } from "../db/db.service";
 import { AssetClass, Gold, Market } from '../../models/models';
-import * as staticData from "../../data/staticData.json";
+import staticData from "../../data/staticData.json";
 import { EquityTableService } from './equity.table.service';
 import { HoldingTableService } from './holding.table.service';
 
