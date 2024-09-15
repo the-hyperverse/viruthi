@@ -7,7 +7,7 @@ export class EquityTableService {
     public static readonly ISIN: string          = "isin";
     public static readonly NAME: string          = "name";
     public static readonly ISIN_NAME: string     = "isinName";
-    public static readonly MARKET_ID: string      = "marketId";
+    public static readonly MARKET_ID: string     = "marketId";
     public static readonly SYMBOL: string        = "symbol";
 
     private static instance: EquityTableService;
