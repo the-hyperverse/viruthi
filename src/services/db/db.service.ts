@@ -3,6 +3,7 @@ import log from 'electron-log/main';
 import { DB_PATH } from '../../models/constants';
 
 export class DBService {
+    private static readonly BATCH_SIZE = 1000;
     private static instance: DBService;
     private db: sqlite3.Database;
 
@@ -73,19 +74,12 @@ export class DBService {
 
         //     this.db.run("commit");
         // });
-        this.db.serialize(() => {
-            this.db.run("begin transaction");
 
-            models.forEach(row => {
-                this.db.run(iQ, Object.values(row), (err: Error | null) => {
-                    log.error('Failed to insert a row in bulk insert:', err?.message)
-                });
-            });
-
-            this.db.run("commit");
+        
+        this.insertInBatches(iQ, models).then(() => {
+            console.log('All batches processed');
         });
     }
-
 
     public updateRow(uQ: string, valList: any[]): void {
         this.db.run(uQ, valList, (err: Error | null) => {
@@ -116,4 +110,21 @@ export class DBService {
             });
         }
     }
+
+    private async insertInBatches(iQ: string, models: any[]): Promise<void> {
+        for (let i = 0; i < models.length; i += DBService.BATCH_SIZE) {
+            const batch = models.slice(i, i + DBService.BATCH_SIZE);
+            this.db.serialize(() => {
+                this.db.run("begin transaction");
+    
+                batch.forEach(row => {
+                    this.db.run(iQ, Object.values(row), (err: Error | null) => {
+                        log.error('Failed to insert a row in bulk insert:', err?.message)
+                    });
+                });
+    
+                this.db.run("commit");
+            });
+        }
+    };
 }
