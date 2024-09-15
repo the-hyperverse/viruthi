@@ -26,7 +26,7 @@ export class EquityTableService {
     }
 
     public getCreateQuery(): string {
-        return `CREATE TABLE ${EquityTableService.TABLE_NAME} (
+        return `CREATE TABLE IF NOT EXISTS ${EquityTableService.TABLE_NAME} (
                     ${EquityTableService.ISIN} TEXT(20) NOT NULL,
                     ${EquityTableService.NAME} TEXT(200) NOT NULL,
                     ${EquityTableService.ISIN_NAME} TEXT(200),
@@ -53,8 +53,19 @@ export class EquityTableService {
         return null;
     }
 
-    public insert(): void {
-
+    public insert(equity: Equity, callback: (err: Error | null) => void): void {
+        this.dbService.insertRow(
+            `INERT INTO ${EquityTableService.TABLE_NAME} (
+                ${EquityTableService.ISIN},
+                ${EquityTableService.NAME},
+                ${EquityTableService.ISIN_NAME},
+                ${EquityTableService.MARET_ID},
+                ${EquityTableService.SYMBOL},
+                ${EquityTableService.ISIN}
+            ) values (?, ?, ?, ?, ?, ?);`,
+            Object.values(equity),
+            callback
+        );
     }
 
     public insertBulk(equities: Equity[]): void {
