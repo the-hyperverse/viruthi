@@ -3,15 +3,18 @@ import { DBService } from "../db/db.service";
 import { AssetClass, Gold, Market } from '../../models/models';
 import * as staticData from "../../data/staticData.json";
 import { EquityTableService } from './equity.table.service';
+import { HoldingTableService } from './holding.table.service';
 
 export class TableService {
     private static instance: TableService;
     private dbService: DBService;
     private equityService: EquityTableService;
+    private holdingService: HoldingTableService;
 
     private constructor() {
         this.dbService = DBService.getInstance();
         this.equityService = EquityTableService.getInstance();
+        this.holdingService = HoldingTableService.getInstance();
     }
 
     public static getInstance() {
@@ -28,7 +31,8 @@ export class TableService {
         }
     
         this.dbService.createTables([
-            this.equityService.getCreateQuery()
+            this.equityService.getCreateQuery(),
+            this.holdingService.getCreateQuery()
         ])
         log.info('Tables are created.')
     }

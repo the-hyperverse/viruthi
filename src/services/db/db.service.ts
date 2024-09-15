@@ -46,8 +46,8 @@ export class DBService {
         log.debug('Tables are created.');
     }
 
-    public getRows(sQ: string, callback: (err: Error | null, rows?: []) => void): void {
-        this.db.all(sQ, callback);
+    public getRows(sQ: string, params: any[], callback: (err: Error | null, rows?: []) => void): void {
+        this.db.all(sQ, params, callback);
     }
 
     public insertRow(iQ: string, valList: any[], callback: (err: Error | null) => void): void {

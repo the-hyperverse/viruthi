@@ -3,12 +3,12 @@ import { DBService } from "../db/db.service";
 import { Equity } from "../../models/models";
 
 export class EquityTableService {
-    public static TABLE_NAME: string    = "Equity";
-    public static ISIN: string          = "isin";
-    public static NAME: string          = "name";
-    public static ISIN_NAME: string     = "isinName";
-    public static MARET_ID: string      = "marketId";
-    public static SYMBOL: string        = "symbol";
+    public static readonly TABLE_NAME: string    = "Equity";
+    public static readonly ISIN: string          = "isin";
+    public static readonly NAME: string          = "name";
+    public static readonly ISIN_NAME: string     = "isinName";
+    public static readonly MARKET_ID: string      = "marketId";
+    public static readonly SYMBOL: string        = "symbol";
 
     private static instance: EquityTableService;
     private dbService: DBService;
@@ -30,15 +30,16 @@ export class EquityTableService {
                     ${EquityTableService.ISIN} TEXT(20) NOT NULL,
                     ${EquityTableService.NAME} TEXT(200) NOT NULL,
                     ${EquityTableService.ISIN_NAME} TEXT(200),
-                    ${EquityTableService.MARET_ID} INTEGER NOT NULL,
+                    ${EquityTableService.MARKET_ID} INTEGER NOT NULL,
                     ${EquityTableService.SYMBOL} TEXT(20),
-                    ${EquityTableService.ISIN} Equity_PK PRIMARY KEY (isin)
+                    Equity_PK PRIMARY KEY (${EquityTableService.ISIN})
                 );`
     }
 
     public getAll(offset: number, limit: number, callback: (rows: [] | undefined) => void): void {
         this.dbService.getRows(
-            `SELECT * FROM ${EquityTableService.TABLE_NAME} limit ${limit} offset ${offset};`,
+            'SELECT * FROM ${EquityTableService.TABLE_NAME} limit ? offset ?;',
+            [limit, offset],
             (err, rows) => {
                 if (!err) {
                     log.error(err);
@@ -49,8 +50,35 @@ export class EquityTableService {
         )
     }
 
-    public get(id: number): Equity | null {
-        return null;
+    public get(isin: string | undefined, marketId: number | undefined, callback: (rows: Equity[] | undefined) => void): void {
+        let sql = `SELECT * FROM ${EquityTableService.TABLE_NAME} WHERE`;
+        let addedFilter = false;
+        let params: any[] = [];
+        if (isin) {
+            sql + ` ${EquityTableService.ISIN} = ?`;
+            addedFilter = true;
+            params.push(isin);
+        }
+        if (marketId) {
+            sql + ` ${addedFilter ? 'AND' : '' } ${EquityTableService.MARKET_ID} = ?`;
+            params.push(marketId);
+        }
+
+        this.dbService.getRows(
+            sql + ';',
+            params,
+            (err, rows) => {
+                if (!err) {
+                    log.error(err);
+                    return;
+                }
+                callback(rows);
+            }
+        )
+    }
+
+    public search(name: string, callback: (rows: Equity[] | undefined) => void): void {
+
     }
 
     public insert(equity: Equity, callback: (err: Error | null) => void): void {
@@ -59,7 +87,7 @@ export class EquityTableService {
                 ${EquityTableService.ISIN},
                 ${EquityTableService.NAME},
                 ${EquityTableService.ISIN_NAME},
-                ${EquityTableService.MARET_ID},
+                ${EquityTableService.MARKET_ID},
                 ${EquityTableService.SYMBOL},
                 ${EquityTableService.ISIN}
             ) values (?, ?, ?, ?, ?, ?);`,
@@ -74,7 +102,7 @@ export class EquityTableService {
                 ${EquityTableService.ISIN},
                 ${EquityTableService.NAME},
                 ${EquityTableService.ISIN_NAME},
-                ${EquityTableService.MARET_ID},
+                ${EquityTableService.MARKET_ID},
                 ${EquityTableService.SYMBOL},
                 ${EquityTableService.ISIN}
             ) values (?, ?, ?, ?, ?, ?);`,
