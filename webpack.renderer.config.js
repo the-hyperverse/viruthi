@@ -15,11 +15,11 @@ module.exports = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.scss$/,
+                test: /\.css$/,
                 use: [
                   MiniCssExtractPlugin.loader,
                   'css-loader',
-                  'sass-loader',
+                  'postcss-loader',
                 ],
             },
             {
@@ -29,7 +29,10 @@ module.exports = {
         ],
     },
     resolve: {
-        extensions: ['.ts', '.js', '.tsx', '.scss'],
+        extensions: ['.ts', '.js', '.tsx', '.css'],
+        alias: {
+            '@': path.resolve(__dirname, 'src'), // Add this line for the alias
+        },
     },
     output: {
         filename: 'renderer.js', // Output file

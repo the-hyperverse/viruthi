@@ -1,3 +1,6 @@
 Use this command to update the packages
 npx npm-check-updates
 npx npm-check-updates -u
+
+# Compile the tailwind css
+npx tailwindcss -i ./src/assets/css/globals.css -o ./dist/assets/css/output.css --watch

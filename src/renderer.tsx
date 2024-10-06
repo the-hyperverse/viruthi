@@ -2,7 +2,9 @@ import log from 'electron-log/renderer';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
-import './assets/scss/style.scss'; // Assuming you already have CSS bundled
+import { Dashboard } from './components/dashboard/dashboard';
+import { Home } from '@/components/home.component';
+import './assets/css/globals.css'; // Assuming you already have CSS bundled
 
 const App = () => {
   return <h1>Hello from React!</h1>;
@@ -10,7 +12,7 @@ const App = () => {
 
 const container = document.getElementById('app');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
-root.render(<App />);
+root.render(<Home />);
 
 
 // // Retrieve data
