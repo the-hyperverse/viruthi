@@ -34,16 +34,19 @@ export class DBService {
             this.db.run("begin transaction");
             
             cQs.forEach((cQ) => {
+                //log.debug("Query : " + cQ);
                 this.db.run(cQ, (err: Error | null) => {
                     if (err) {
                         log.error('Failed to create table:', err?.message);
+                    } else {
+                        log.debug('A Table is created.');
                     }
                 });
             });
 
             this.db.run("commit");
         });
-        log.debug('Tables are created.');
+        
     }
 
     public getRows(sQ: string, params: any[], callback: (err: Error | null, rows?: []) => void): void {

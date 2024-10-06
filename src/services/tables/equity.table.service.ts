@@ -27,12 +27,12 @@ export class EquityTableService {
 
     public getCreateQuery(): string {
         return `CREATE TABLE IF NOT EXISTS ${EquityTableService.TABLE_NAME} (
-                    ${EquityTableService.ISIN} TEXT(20) NOT NULL,
-                    ${EquityTableService.NAME} TEXT(200) NOT NULL,
-                    ${EquityTableService.ISIN_NAME} TEXT(200),
+                    ${EquityTableService.ISIN} VARCHAR(20) NOT NULL,
+                    ${EquityTableService.NAME} VARCHAR(200) NOT NULL,
+                    ${EquityTableService.ISIN_NAME} VARCHAR(200),
                     ${EquityTableService.MARKET_ID} INTEGER NOT NULL,
-                    ${EquityTableService.SYMBOL} TEXT(20),
-                    Equity_PK PRIMARY KEY (${EquityTableService.ISIN})
+                    ${EquityTableService.SYMBOL} VARCHAR(20),
+                    PRIMARY KEY (${EquityTableService.ISIN})
                 );`
     }
 

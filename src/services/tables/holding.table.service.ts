@@ -31,15 +31,15 @@ export class HoldingTableService {
 
     public getCreateQuery(): string {
         return `CREATE TABLE IF NOT EXISTS ${HoldingTableService.TABLE_NAME} (
-            ${HoldingTableService.ID} INTEGER PRIMARY KEY AUTOINCREMENT,    -- Auto-increment for ID
+            ${HoldingTableService.ID} INTEGER PRIMARY KEY AUTOINCREMENT, 
             ${HoldingTableService.MARKET_ID} INTEGER NOT NULL,
             ${HoldingTableService.ASSET_CLASS_ID} INTEGER NOT NULL,
-            ${HoldingTableService.ASSET_ID} TEXT(2) NOT NULL,                -- Asset ID as string (TEXT in SQLite)
-            ${HoldingTableService.RATE} DECIMAL(10, 2) NOT NULL,            -- Decimal for rate
-            ${HoldingTableService.QUANTITY} DECIMAL(10, 10) NOT NULL,       -- Decimal for quantity
-            ${HoldingTableService.HOLDING_DATE} DATETIME NOT NULL,           -- Holding date as DATETIME
+            ${HoldingTableService.ASSET_ID} VARCHAR(2) NOT NULL,
+            ${HoldingTableService.RATE} DECIMAL(10, 2) NOT NULL,
+            ${HoldingTableService.QUANTITY} DECIMAL(10, 10) NOT NULL,
+            ${HoldingTableService.HOLDING_DATE} DATETIME NOT NULL,
             ${HoldingTableService.CREATEDBY} INTEGER NOT NULL,
-            ${HoldingTableService.CREATEDON} DATETIME NOT NULL              -- Created on as DATETIME
+            ${HoldingTableService.CREATEDON} DATETIME NOT NULL
         );`;
     }
 

@@ -34,7 +34,6 @@ export class TableService {
             this.equityService.getCreateQuery(),
             this.holdingService.getCreateQuery()
         ])
-        log.info('Tables are created.')
     }
 
     /* Market APIs */
