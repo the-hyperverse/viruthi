@@ -5,26 +5,26 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "tw-inline-flex tw-items-center tw-justify-center tw-whitespace-nowrap tw-rounded-md tw-text-sm tw-font-medium tw-transition-colors focus-visible:tw-outline-none focus-visible:tw-ring-1 focus-visible:tw-ring-slate-950 disabled:tw-pointer-events-none disabled:tw-opacity-50 dark:focus-visible:tw-ring-slate-300",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-slate-950 disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-slate-300",
   {
     variants: {
       variant: {
         default:
-          "tw-bg-slate-900 tw-text-slate-50 tw-shadow hover:tw-bg-slate-900/90 dark:tw-bg-slate-50 dark:tw-text-slate-900 dark:hover:tw-bg-slate-50/90",
+          "bg-slate-900 text-slate-50 shadow hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90",
         destructive:
-          "tw-bg-red-500 tw-text-slate-50 tw-shadow-sm hover:tw-bg-red-500/90 dark:tw-bg-red-900 dark:tw-text-slate-50 dark:hover:tw-bg-red-900/90",
+          "bg-red-500 text-slate-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/90",
         outline:
-          "tw-border tw-border-slate-200 tw-bg-white tw-shadow-sm hover:tw-bg-slate-100 hover:tw-text-slate-900 dark:tw-border-slate-800 dark:tw-bg-slate-950 dark:hover:tw-bg-slate-800 dark:hover:tw-text-slate-50",
+          "border border-slate-200 bg-white shadow-sm hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-800 dark:hover:text-slate-50",
         secondary:
-          "tw-bg-slate-100 tw-text-slate-900 tw-shadow-sm hover:tw-bg-slate-100/80 dark:tw-bg-slate-800 dark:tw-text-slate-50 dark:hover:tw-bg-slate-800/80",
-        ghost: "hover:tw-bg-slate-100 hover:tw-text-slate-900 dark:hover:tw-bg-slate-800 dark:hover:tw-text-slate-50",
-        link: "tw-text-slate-900 tw-underline-offset-4 hover:tw-underline dark:tw-text-slate-50",
+          "bg-slate-100 text-slate-900 shadow-sm hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
+        ghost: "hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-50",
+        link: "text-slate-900 underline-offset-4 hover:underline dark:text-slate-50",
       },
       size: {
-        default: "tw-h-9 tw-px-4 tw-py-2",
-        sm: "tw-h-8 tw-rounded-md tw-px-3 tw-text-xs",
-        lg: "tw-h-10 tw-rounded-md tw-px-8",
-        icon: "tw-h-9 tw-w-9",
+        default: "h-9 px-4 py-2",
+        sm: "h-8 rounded-md px-3 text-xs",
+        lg: "h-10 rounded-md px-8",
+        icon: "h-9 w-9",
       },
     },
     defaultVariants: {
