@@ -4,17 +4,17 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const badgeVariants = cva(
-  "tw-inline-flex tw-items-center tw-rounded-md tw-border tw-border-slate-200 tw-px-2.5 tw-py-0.5 tw-text-xs tw-font-semibold tw-transition-colors focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-slate-950 focus:tw-ring-offset-2 dark:tw-border-slate-800 dark:focus:tw-ring-slate-300",
+  "inline-flex items-center rounded-md border border-slate-200 px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2 dark:border-slate-800 dark:focus:ring-slate-300",
   {
     variants: {
       variant: {
         default:
-          "tw-border-transparent tw-bg-slate-900 tw-text-slate-50 tw-shadow hover:tw-bg-slate-900/80 dark:tw-bg-slate-50 dark:tw-text-slate-900 dark:hover:tw-bg-slate-50/80",
+          "border-transparent bg-slate-900 text-slate-50 shadow hover:bg-slate-900/80 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/80",
         secondary:
-          "tw-border-transparent tw-bg-slate-100 tw-text-slate-900 hover:tw-bg-slate-100/80 dark:tw-bg-slate-800 dark:tw-text-slate-50 dark:hover:tw-bg-slate-800/80",
+          "border-transparent bg-slate-100 text-slate-900 hover:bg-slate-100/80 dark:bg-slate-800 dark:text-slate-50 dark:hover:bg-slate-800/80",
         destructive:
-          "tw-border-transparent tw-bg-red-500 tw-text-slate-50 tw-shadow hover:tw-bg-red-500/80 dark:tw-bg-red-900 dark:tw-text-slate-50 dark:hover:tw-bg-red-900/80",
-        outline: "tw-text-slate-950 dark:tw-text-slate-50",
+          "border-transparent bg-red-500 text-slate-50 shadow hover:bg-red-500/80 dark:bg-red-900 dark:text-slate-50 dark:hover:bg-red-900/80",
+        outline: "text-slate-950 dark:text-slate-50",
       },
     },
     defaultVariants: {
