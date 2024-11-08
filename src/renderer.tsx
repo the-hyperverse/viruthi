@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client';
 import { Dashboard } from './components/dashboard/dashboard';
 import { Home } from '@/components/home.component';
 import './assets/css/globals.css'; // Assuming you already have CSS bundled
+import { Page } from './components/dashboard/page';
 
 const App = () => {
   return <h1>Hello from React!</h1>;
@@ -12,7 +13,7 @@ const App = () => {
 
 const container = document.getElementById('app');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
-root.render(<Dashboard />);
+root.render(<Page />);
 
 
 // // Retrieve data
