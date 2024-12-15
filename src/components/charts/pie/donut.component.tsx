@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { DollarSign, TrendingUp } from "lucide-react"
+import { DollarSign, PiggyBank, TrendingUp } from "lucide-react"
 import { Label, Pie, PieChart } from "recharts"
 
 import {
@@ -63,7 +63,7 @@ export function Donut() {
         <Card className="flex flex-col w-full max-w-3xl max-h-[400px]">
             <CardHeader className="items-center pb-0 flex flex-row justify-between space-y-0 ">
                 <CardTitle>Wealth Distribution</CardTitle>
-                <DollarSign className="h-4 w-4 text-muted-foreground" />
+                <PiggyBank className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent className="flex-1 pb-0">
                 <ChartContainer

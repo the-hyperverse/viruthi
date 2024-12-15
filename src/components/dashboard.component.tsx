@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/components/dashboard/app-sidebar"
+import { AppSidebar } from "@/components/sidebar/app-sidebar"
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -11,13 +11,13 @@ import {
 	SidebarProvider,
 	SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "../ui/card"
-import { DollarSign, Medal, ChartNoAxesCombined, ChartCandlestick } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "./ui/card"
+import { DollarSign, Medal, ChartNoAxesCombined, ChartCandlestick, IndianRupee } from "lucide-react"
 
 import "@/assets/css/globals.css";
-import { Donut } from "../charts/pie/donut.component"
-import { LineChartComponent } from "../charts/graph/areachart.component"
-import Stocks from "../charts/table/stocks.component"
+import { Donut } from "./charts/pie/donut.component"
+import { LineChartComponent } from "./charts/graph/areachart.component"
+import Stocks from "./charts/table/stocks.component"
 
 export function Dashboard() {
 	return (
@@ -47,7 +47,7 @@ export function Dashboard() {
 								<CardTitle className="text-sm font-medium">
 									Net Worth
 								</CardTitle>
-								<DollarSign className="h-4 w-4 text-muted-foreground" />
+								<ChartNoAxesCombined className="h-4 w-4 text-muted-foreground" />
 							</CardHeader>
 							<CardContent>
 								<div className="text-2xl font-bold">$45,231.89</div>
@@ -59,7 +59,7 @@ export function Dashboard() {
 						<Card x-chunk="dashboard-01-chunk-1">
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 								<CardTitle className="text-sm font-medium">IN Stocks</CardTitle>
-								<ChartNoAxesCombined className="h-4 w-4 text-muted-foreground" />
+								<IndianRupee className="h-4 w-4 text-muted-foreground" />
 							</CardHeader>
 							<CardContent>
 								<div className="text-2xl font-bold">+2350</div>
@@ -71,7 +71,7 @@ export function Dashboard() {
 						<Card x-chunk="dashboard-01-chunk-2">
 							<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
 								<CardTitle className="text-sm font-medium">US Stocks</CardTitle>
-								<ChartCandlestick className="h-4 w-4 text-muted-foreground" />
+								<DollarSign className="h-4 w-4 text-muted-foreground" />
 							</CardHeader>
 							<CardContent>
 								<div className="text-2xl font-bold">+12,234</div>

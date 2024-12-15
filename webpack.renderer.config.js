@@ -24,7 +24,13 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
-                use: 'file-loader', // Handling static assets like images
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        outputPath: 'assets/images', // Images will be copied to dist/assets/images/
+                        name: '[name].[ext]', // Preserve original name with hash for uniqueness
+                    },
+                },
             },
         ],
     },
