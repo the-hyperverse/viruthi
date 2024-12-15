@@ -17,6 +17,8 @@ import { DollarSign, Medal, ChartNoAxesCombined, ChartCandlestick } from "lucide
 import "@/assets/css/globals.css";
 import { Donut } from "../charts/donut"
 import { LineChartComponent } from "../charts/line-chart-component"
+import { DataTable } from "../charts/datatable"
+import Stocks from "../charts/stocks-table/stocks.component"
 
 export function Dashboard() {
 	return (
@@ -111,6 +113,9 @@ export function Dashboard() {
 
 						<Donut />
 						<LineChartComponent />
+					</div>
+					<div className="grid gap-4 pt-2 md:grid-cols-1 md:gap-8 lg:grid-cols-1">
+						<Stocks />
 					</div>
 				</main>
 			</SidebarInset>

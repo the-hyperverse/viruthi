@@ -55,7 +55,7 @@ export function LineChartComponent() {
 						<SelectValue placeholder="Select time range" />
 					</SelectTrigger>
 					<SelectContent>
-						<SelectItem value="1">Last 1 months</SelectItem>
+						<SelectItem value="2">Last 2 months</SelectItem>
 						<SelectItem value="3">Last 3 months</SelectItem>
 						<SelectItem value="6">Last 6 months</SelectItem>
 						<SelectItem value="12">Last 12 months</SelectItem>
@@ -78,8 +78,8 @@ export function LineChartComponent() {
 							data={chartData}
 							margin={{
 								top: 20,
-								right: 20,
-								left: 2npm0,
+								right: 25,
+								left: 20,
 								bottom: 0,
 							}}
 						>
