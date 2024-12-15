@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import { Home } from '@/components/home.component';
 import './assets/css/globals.css'; // Assuming you already have CSS bundled
-import { Dashboard } from './components/dashboard/dashboard';
+import { Dashboard } from '@/components/dashboard/dashboard.component';
 
 const App = () => {
   return <h1>Hello from React!</h1>;

@@ -79,7 +79,7 @@ export function LineChartComponent() {
 							margin={{
 								top: 20,
 								right: 25,
-								left: 20,
+								left: 25,
 								bottom: 0,
 							}}
 						>
@@ -100,7 +100,7 @@ export function LineChartComponent() {
 							/>
 							<ChartTooltip content={<ChartTooltipContent indicator="line" />} />
 							<Area
-								type="natural"
+								type="linear"
 								dataKey="desktop"
 								stroke="var(--color-desktop)"
 								fill="var(--color-desktop)"
