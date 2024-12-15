@@ -11,12 +11,10 @@ import {
 	SidebarProvider,
 	SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "./ui/card"
-import { DollarSign, Medal, ChartNoAxesCombined, ChartCandlestick, IndianRupee } from "lucide-react"
 
 import "@/assets/css/globals.css";
-import { Donut } from "./charts/pie/donut.component"
-import { LineChartComponent } from "./charts/graph/areachart.component"
+import { AssetDistribution } from "./charts/pie/asset-dist.component"
+import { WealthGrowthGraph } from "./charts/graph/wealthgrowth.component"
 import Stocks from "./charts/table/stocks.component"
 import NetworthCount from "./cards/networthcount.component"
 import INStocksCount from "./cards/incount.component"
@@ -53,9 +51,10 @@ export function Dashboard() {
 					</div>
 
 					<div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4 mt-[30px]">
-						<Donut />
-						<LineChartComponent />
+						<AssetDistribution />
+						<WealthGrowthGraph />
 					</div>
+
 					<div className="grid gap-4 pt-2 md:grid-cols-1 md:gap-8 lg:grid-cols-1">
 						<Stocks />
 					</div>

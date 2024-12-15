@@ -42,40 +42,91 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
 }
 
+
+
 const r = {
-    total: 5,
+    total: 10,
     data: [
         {
-            id: "m5gr84i9",
-            amount: 316,
-            status: "success",
-            email: "ken99@yahoo.com",
+            isin: "INE123A01016",
+            name: "Reliance Industries",
+            isinName: "Reliance Industries INE123A01016",
+            marketId: 1,
+            symbol: "RELIANCE",
+            amount: 2000,
         },
         {
-            id: "3u1reuv4",
-            amount: 242,
-            status: "success",
-            email: "Abe45@gmail.com",
+            isin: "INE467B01029",
+            name: "Tata Consultancy Services",
+            isinName: "TCS INE467B01029",
+            marketId: 1,
+            symbol: "TCS",
+            amount: 3000,
         },
         {
-            id: "derv1ws0",
-            amount: 837,
-            status: "processing",
-            email: "Monserrat44@gmail.com",
+            isin: "INE062A01020",
+            name: "State Bank of India",
+            isinName: "SBI INE062A01020",
+            marketId: 1,
+            symbol: "SBIN",
+            amount: 1500,
         },
         {
-            id: "5kma53ae",
-            amount: 874,
-            status: "success",
-            email: "Silas22@gmail.com",
+            isin: "INE154A01025",
+            name: "Hindustan Unilever",
+            isinName: "HUL INE154A01025",
+            marketId: 1,
+            symbol: "HINDUNILVR",
+            amount: 500,
         },
         {
-            id: "bhqecj4p",
-            amount: 721,
-            status: "failed",
-            email: "carmella@hotmail.com",
+            isin: "INE090A01021",
+            name: "Infosys",
+            isinName: "Infosys INE090A01021",
+            marketId: 1,
+            symbol: "INFY",
+            amount: 2500,
         },
-        // ... more data
+        {
+            isin: "US0378331005",
+            name: "Apple Inc.",
+            isinName: "Apple US0378331005",
+            marketId: 2,
+            symbol: "AAPL",
+            amount: 10,
+        },
+        {
+            isin: "US0231351067",
+            name: "Amazon.com Inc.",
+            isinName: "Amazon US0231351067",
+            marketId: 2,
+            symbol: "AMZN",
+            amount: 5,
+        },
+        {
+            isin: "US5949181045",
+            name: "Microsoft Corp.",
+            isinName: "Microsoft US5949181045",
+            marketId: 2,
+            symbol: "MSFT",
+            amount: 15,
+        },
+        {
+            isin: "US67066G1040",
+            name: "NVIDIA Corp.",
+            isinName: "NVIDIA US67066G1040",
+            marketId: 2,
+            symbol: "NVDA",
+            amount: 20,
+        },
+        {
+            isin: "US88160R1014",
+            name: "Tesla Inc.",
+            isinName: "Tesla US88160R1014",
+            marketId: 2,
+            symbol: "TSLA",
+            amount: 12,
+        },
     ]
 }
 
@@ -136,10 +187,10 @@ export function DataTable<TData, TValue>({
         <div className="w-full overflow-x-auto">
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter emails..."
-                    value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+                    placeholder="Filter name..."
+                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value)
+                        table.getColumn("name")?.setFilterValue(event.target.value)
                     }
                     className="w-[250px]"
                 />

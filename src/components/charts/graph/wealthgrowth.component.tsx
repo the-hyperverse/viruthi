@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { TrendingUp } from 'lucide-react'
+import { TrendingDown, TrendingUp } from 'lucide-react'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis, Tooltip, LabelList } from "recharts"
 
 import {
@@ -26,23 +26,24 @@ import {
 } from "@/components/ui/select"
 
 const fullChartData = [
-	{ month: "January", desktop: 186 },
-	{ month: "February", desktop: 305 },
-	{ month: "March", desktop: 237 },
-	{ month: "April", desktop: 73 },
-	{ month: "May", desktop: 209 },
-	{ month: "June", desktop: 214 },
-	{ month: "July", desktop: 224 },
-	{ month: "August", desktop: 254 },
-	{ month: "September", desktop: 314 },
-	{ month: "October", desktop: 114 },
-	{ month: "November", desktop: 64 },
-	{ month: "December", desktop: 284 },
+	{ month: "January", amount: 186 },
+	{ month: "February", amount: 305 },
+	{ month: "March", amount: 237 },
+	{ month: "April", amount: 73 },
+	{ month: "May", amount: 209 },
+	{ month: "June", amount: 214 },
+	{ month: "July", amount: 224 },
+	{ month: "August", amount: 254 },
+	{ month: "September", amount: 314 },
+	{ month: "October", amount: 114 },
+	{ month: "November", amount: 64 },
+	{ month: "December", amount: 284 },
 ]
 
-export function LineChartComponent() {
-	const [timeRange, setTimeRange] = useState("12")
+const diff = -5.2;
 
+export function WealthGrowthGraph() {
+	const [timeRange, setTimeRange] = useState("12")
 	const chartData = fullChartData.slice(-parseInt(timeRange))
 
 	return (
@@ -66,8 +67,8 @@ export function LineChartComponent() {
 			<CardContent>
 				<ChartContainer
 					config={{
-						desktop: {
-							label: "Desktop",
+						amount: {
+							label: "Amount",
 							color: "hsl(var(--chart-1))",
 						},
 					}}
@@ -101,22 +102,22 @@ export function LineChartComponent() {
 							<ChartTooltip content={<ChartTooltipContent indicator="line" />} />
 							<Area
 								type="linear"
-								dataKey="desktop"
-								stroke="var(--color-desktop)"
-								fill="var(--color-desktop)"
+								dataKey="amount"
+								stroke="var(--color-amount)"
+								fill="var(--color-amount)"
 								fillOpacity={0.6}
-								dot={{ stroke: 'var(--color-desktop)', strokeWidth: 2, r: 4, fill: 'white' }}
-								activeDot={{ r: 6, stroke: 'var(--color-desktop)', strokeWidth: 2, fill: 'white' }}
+								dot={{ stroke: 'var(--color-amount)', strokeWidth: 2, r: 4, fill: 'white' }}
+								activeDot={{ r: 6, stroke: 'var(--color-amount)', strokeWidth: 2, fill: 'white' }}
 							>
 								<LabelList
-									dataKey="desktop"
+									dataKey="amount"
 									position="top"
 									offset={10}
 									content={({ x, y, value }) => (
 										<text
 											x={x}
 											y={y}
-											fill="var(--color-desktop)"
+											fill="var(--color-amount)"
 											fontSize={12}
 											textAnchor="middle"
 											dy={-10}
@@ -132,7 +133,7 @@ export function LineChartComponent() {
 			</CardContent>
 			<CardFooter className="flex-col items-start gap-2 text-sm">
 				<div className="flex gap-2 font-medium leading-none text-muted-foreground">
-					Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+					Trending {diff >= 0 ? 'up' : 'down' } by {diff}% this month {diff >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" /> }
 				</div>
 			</CardFooter>
 		</Card>

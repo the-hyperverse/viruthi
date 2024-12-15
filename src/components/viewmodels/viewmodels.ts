@@ -1,3 +1,5 @@
+import { Equity } from "@/models/models"
+
 export interface UserViewModel {
     name: string,
     email: string,
@@ -32,4 +34,14 @@ export interface CountViewModel {
     diff: number,
     isDiffPercentage: boolean,
     icon: any
+}
+
+export interface AssetDistributionViewModel {
+    asset: string,
+    amount: number,
+    fill: string
+}
+
+export interface EquityViewModel extends Equity {
+    amount: number
 }
