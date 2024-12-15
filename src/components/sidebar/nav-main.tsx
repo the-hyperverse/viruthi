@@ -23,7 +23,7 @@ import { NavElementsViewModel } from "../viewmodels/viewmodels"
 export function NavMain({ items, ...props}: { items: NavElementsViewModel[] } & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
     return (
         <SidebarGroup {...props} >
-            <SidebarGroupLabel>Stats</SidebarGroupLabel>
+            <SidebarGroupLabel>Reports</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) => (
                     <Collapsible key={item.title} asChild defaultOpen={item.isActive}>

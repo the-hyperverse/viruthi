@@ -23,3 +23,13 @@ export interface NavDataViewModel {
     navSettings: NavElementsViewModel[],
     navSupport: NavElementsViewModel[]
 }
+
+export interface CountViewModel {
+    title: string,
+    amount: number,
+    unit: string,
+    isUnitPrefix: boolean,
+    diff: number,
+    isDiffPercentage: boolean,
+    icon: any
+}
