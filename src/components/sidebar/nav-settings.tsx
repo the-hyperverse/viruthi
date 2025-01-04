@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
     SidebarGroup,
     SidebarGroupLabel,
@@ -9,10 +10,20 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar"
 import { NavElementsViewModel } from "../viewmodels/viewmodels"
+import { ImportDialog } from "../dialogs/import-dialog"
+import { ExportDialog } from "../dialogs/export-dialog"
 
-//NOTE: These elements have a context menu
 export function NavSettings({ items }: { items: NavElementsViewModel[] }) {
-    const { isMobile } = useSidebar()
+    const [importOpen, setImportOpen] = useState(false)
+    const [exportOpen, setExportOpen] = useState(false)
+
+    const handleClick = (title: string) => {
+        if (title === "Import Data") {
+            setImportOpen(true)
+        } else if (title === "Export Data") {
+            setExportOpen(true)
+        }
+    }
 
     return (
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -21,47 +32,16 @@ export function NavSettings({ items }: { items: NavElementsViewModel[] }) {
                 {items.map((item) => (
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild>
-                            <a href={item.url}>
+                            <button onClick={() => handleClick(item.title)}>
                                 <item.icon />
                                 <span>{item.title}</span>
-                            </a>
+                            </button>
                         </SidebarMenuButton>
-                        {/* <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuAction showOnHover>
-                                    <MoreHorizontal />
-                                    <span className="sr-only">More</span>
-                                </SidebarMenuAction>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                                className="w-48"
-                                side={isMobile ? "bottom" : "right"}
-                                align={isMobile ? "end" : "start"}
-                            >
-                                <DropdownMenuItem>
-                                    <Folder className="text-muted-foreground" />
-                                    <span>View Project</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <Share className="text-muted-foreground" />
-                                    <span>Share Project</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                    <Trash2 className="text-muted-foreground" />
-                                    <span>Delete Project</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu> */}
                     </SidebarMenuItem>
                 ))}
-                {/* <SidebarMenuItem>
-                    <SidebarMenuButton>
-                        <MoreHorizontal />
-                        <span>More</span>
-                    </SidebarMenuButton>
-                </SidebarMenuItem> */}
             </SidebarMenu>
+            <ImportDialog open={importOpen} onOpenChange={setImportOpen} />
+            <ExportDialog open={exportOpen} onOpenChange={setExportOpen} />
         </SidebarGroup>
     )
 }
