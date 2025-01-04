@@ -13,7 +13,7 @@ interface NavSubElementsViewModel{
 
 export interface NavElementsViewModel {
     title: string,
-    url: string,
+    url?: string,
     icon: any,
     isActive?: boolean,
     items?: NavSubElementsViewModel[]

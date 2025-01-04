@@ -113,7 +113,7 @@ export function ImportDialog({
                     </div>
                     <div className="grid gap-2">
                         {/* Upload Button */}
-                        <Button onClick={handleFileUpload} disabled={!market || !assetClass}>
+                        <Button onClick={handleFileUpload} disabled={!market || !assetClass || !fileInputRef.current?.files?.[0]}>
                             Upload
                         </Button>
                     </div>

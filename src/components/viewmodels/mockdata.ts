@@ -75,12 +75,10 @@ export const NavData: NavDataViewModel = {
     navSettings: [
         {
             title: "Import Data",
-            url: "#",
             icon: FolderDown,
         },
         {
             title: "Export Data",
-            url: "#",
             icon: FolderUp,
         }
     ],
