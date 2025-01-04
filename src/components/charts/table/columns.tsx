@@ -86,12 +86,18 @@ export const columns: ColumnDef<EquityHoldingViewModel>[] = [
         cell: ({ row }) => {
             const holding = parseFloat(row.getValue("holding"));
             const holdingDiff = row.original.holdingDiff;
-            console.log(row)
+            const percentageChange = holding ? (holdingDiff / (holding - holdingDiff)) * 100 : 0;
+            
             return (
-                <div className="text-right">
+                <div className="text-right space-y-1">
                     <div className="font-medium">{holding}</div>
-                    <div className={`text-xs ${holdingDiff > 0 ? 'text-green-500' : holdingDiff < 0 ? 'text-red-500' : ''}`}>
-                        {holdingDiff > 0 ? '+' : ''}{holdingDiff}
+                    <div className="flex items-center justify-end gap-2 text-xs">
+                        <span className={`${holdingDiff > 0 ? 'text-green-500' : holdingDiff < 0 ? 'text-red-500' : ''}`}>
+                            {holdingDiff > 0 ? '+' : ''}{holdingDiff}
+                        </span>
+                        <span className={`${holdingDiff > 0 ? 'text-green-500' : holdingDiff < 0 ? 'text-red-500' : ''}`}>
+                            ({percentageChange > 0 ? '+' : ''}{percentageChange.toFixed(2)}%)
+                        </span>
                     </div>
                 </div>
             )
@@ -105,6 +111,8 @@ export const columns: ColumnDef<EquityHoldingViewModel>[] = [
             const market = staticData.markets.find(v => v.id === marketId)
             const rate = parseFloat(row.getValue("rate"))
             const rateDiff = row.original.rateDiff;
+            const percentageChange = rate ? (rateDiff / (rate - rateDiff)) * 100 : 0;
+            
             const formattedRate = new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: market?.currency ?? "INR",
@@ -115,10 +123,15 @@ export const columns: ColumnDef<EquityHoldingViewModel>[] = [
             }).format(rateDiff)
 
             return (
-                <div className="text-right">
+                <div className="text-right space-y-1">
                     <div className="font-medium">{formattedRate}</div>
-                    <div className={`text-xs ${rateDiff > 0 ? 'text-green-500' : rateDiff < 0 ? 'text-red-500' : ''}`}>
-                        {rateDiff > 0 ? '+' : ''}{formattedDiff}
+                    <div className="flex items-center justify-end gap-2 text-xs">
+                        <span className={`${rateDiff > 0 ? 'text-green-500' : rateDiff < 0 ? 'text-red-500' : ''}`}>
+                            {rateDiff > 0 ? '+' : ''}{formattedDiff}
+                        </span>
+                        <span className={`${rateDiff > 0 ? 'text-green-500' : rateDiff < 0 ? 'text-red-500' : ''}`}>
+                            ({percentageChange > 0 ? '+' : ''}{percentageChange.toFixed(2)}%)
+                        </span>
                     </div>
                 </div>
             )
@@ -126,12 +139,14 @@ export const columns: ColumnDef<EquityHoldingViewModel>[] = [
     },
     {
         accessorKey: "amount",
-        header: () => <div className="text-right">Amount</div>,
+        header: () => <div className="text-right">Current Amount</div>,
         cell: ({ row }) => {
             const marketId = row.getValue("marketId")
             const market = staticData.markets.find(v => v.id === marketId)
             const amount = parseFloat(row.getValue("amount"))
             const amountDiff = row.original.amountDiff;
+            const percentageChange = amount ? (amountDiff / (amount - amountDiff)) * 100 : 0;
+            
             const formattedAmount = new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: market?.currency ?? "INR",
@@ -142,10 +157,15 @@ export const columns: ColumnDef<EquityHoldingViewModel>[] = [
             }).format(amountDiff)
 
             return (
-                <div className="text-right">
+                <div className="text-right space-y-1">
                     <div className="font-medium">{formattedAmount}</div>
-                    <div className={`text-xs ${amountDiff > 0 ? 'text-green-500' : amountDiff < 0 ? 'text-red-500' : ''}`}>
-                        {amountDiff > 0 ? '+' : ''}{formattedDiff}
+                    <div className="flex items-center justify-end gap-2 text-xs">
+                        <span className={`${amountDiff > 0 ? 'text-green-500' : amountDiff < 0 ? 'text-red-500' : ''}`}>
+                            {amountDiff > 0 ? '+' : ''}{formattedDiff}
+                        </span>
+                        <span className={`${amountDiff > 0 ? 'text-green-500' : amountDiff < 0 ? 'text-red-500' : ''}`}>
+                            ({percentageChange > 0 ? '+' : ''}{percentageChange.toFixed(2)}%)
+                        </span>
                     </div>
                 </div>
             )
@@ -157,12 +177,14 @@ export const columns: ColumnDef<EquityHoldingViewModel>[] = [
         cell: ({ row }) => {
             const marketId = row.getValue("marketId")
             const market = staticData.markets.find(v => v.id === marketId)
-            const amount = parseFloat(row.getValue("investedAmount"))
-            const amountDiff = parseFloat(row.getValue("amount")) - amount;
+            const investedAmount = parseFloat(row.getValue("investedAmount"));
+            const currentAmount = parseFloat(row.getValue("amount")); 
+            const amountDiff = currentAmount - investedAmount;
+            const percentageChange = ((currentAmount - investedAmount) / investedAmount) * 100;
             const formattedAmount = new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: market?.currency ?? "INR",
-            }).format(amount)
+            }).format(investedAmount)
             const formattedDiff = new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: market?.currency ?? "INR",
@@ -171,8 +193,13 @@ export const columns: ColumnDef<EquityHoldingViewModel>[] = [
             return (
                 <div className="text-right">
                     <div className="font-medium">{formattedAmount}</div>
-                    <div className={`text-xs ${amountDiff > 0 ? 'text-green-500' : amountDiff < 0 ? 'text-red-500' : ''}`}>
-                        {amountDiff > 0 ? '+' : ''}{formattedDiff}
+                    <div className="flex items-center justify-end gap-2 text-xs">
+                        <span className={`${amountDiff > 0 ? 'text-green-500' : amountDiff < 0 ? 'text-red-500' : ''}`}>
+                            {amountDiff > 0 ? '+' : ''}{formattedDiff}
+                        </span>
+                        <span className={`${amountDiff > 0 ? 'text-green-500' : amountDiff < 0 ? 'text-red-500' : ''}`}>
+                            ({percentageChange > 0 ? '+' : ''}{percentageChange.toFixed(2)}%)
+                        </span>
                     </div>
                 </div>
             )
