@@ -42,6 +42,12 @@ export interface AssetDistributionViewModel {
     fill: string
 }
 
-export interface EquityViewModel extends Equity {
-    amount: number
+export interface EquityHoldingViewModel extends Equity {
+    holding: number,
+    holdingDiff: number,
+    rate: number,
+    rateDiff: number,
+    amount: number,
+    amountDiff: number,
+    investedAmount: number
 }
