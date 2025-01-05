@@ -20,10 +20,10 @@ export class ImportService {
         return ImportService.instance;
     }
 
-    public async importFile(formData: any): Promise<ResponseDTO> {
+    public async importFile(formData: any): Promise<ResponseDTO<void>> {
         const filePath = formData.filePath as string;
         const importType = parseInt(formData.importType as string);
-        let result: Promise<ResponseDTO>;
+        let result: Promise<ResponseDTO<void>>;
 
         switch (importType) {
             case staticData.importTypeKeys.IN_STOCKS:
@@ -45,17 +45,17 @@ export class ImportService {
                 result = this.importGoldHoldings(filePath);
                 break;
             default:
-                result = Promise.resolve({ status: STATUS.INTERNAL_SERVER_ERROR, message: "Invalid import type" });
+                result = Promise.resolve({ status: STATUS.INTERNAL_SERVER_ERROR, message: "Invalid import type" } as ResponseDTO<void>);
                 break;
         }
 
         return result;
     }
 
-    private async importIndianStocks(filePath: string): Promise<ResponseDTO> {
+    private async importIndianStocks(filePath: string): Promise<ResponseDTO<void>> {
         return new Promise((resolve, reject) => {
             let stocks: Equity[] = [];
-            const res: ResponseDTO = { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error inserting stocks" };
+            const res = { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error inserting stocks" } as ResponseDTO<void>;
 
             //TODO: preprocess CSV file to remove unwanted columns and trim values
             fs.createReadStream(filePath)
@@ -98,10 +98,10 @@ export class ImportService {
         });
     }
 
-    private async importCdslHoldings(filePath: string): Promise<ResponseDTO> {
+    private async importCdslHoldings(filePath: string): Promise<ResponseDTO<void>> {
         return new Promise((resolve, reject) => {
             const holdings: Holding[] = [];
-            const res: ResponseDTO = { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error importing CDSL holdings" };
+            const res = { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error importing CDSL holdings" } as ResponseDTO<void>;
             let holdingDate: Date | null = null;
 
             const fileContent = fs.readFileSync(filePath, 'utf8');
@@ -175,18 +175,18 @@ export class ImportService {
         });
     }
 
-    private async importNdslHoldings(filePath: string): Promise<ResponseDTO> {
-        return { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error in handling NDSL holdings" };
+    private async importNdslHoldings(filePath: string): Promise<ResponseDTO<void>> {
+        return { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error in handling NDSL holdings" } as ResponseDTO<void>;
     }
 
-    private async importMutualFunds(filePath: string): Promise<ResponseDTO> {
-        return { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error in handling Mutual Funds" };
+    private async importMutualFunds(filePath: string): Promise<ResponseDTO<void>> {
+        return { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error in handling Mutual Funds" } as ResponseDTO<void>;
     }
 
-    private async importUsVestedHoldingsExport(filePath: string): Promise<ResponseDTO> {
-        return { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error in handling US Vested Holdings Export" };
+    private async importUsVestedHoldingsExport(filePath: string): Promise<ResponseDTO<void>> {
+        return { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error in handling US Vested Holdings Export" } as ResponseDTO<void>;
     }
-    private async importGoldHoldings(filePath: string): Promise<ResponseDTO> {
-        return { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error in handling Gold Holdings" };
+    private async importGoldHoldings(filePath: string): Promise<ResponseDTO<void>> {
+        return { status: STATUS.INTERNAL_SERVER_ERROR, message: "Error in handling Gold Holdings" } as ResponseDTO<void>;
     }
 }

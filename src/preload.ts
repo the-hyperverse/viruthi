@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent, webUtils } from 'electron';
-import { AssetClass, ResponseDTO } from './models/models';
+import { AssetClass, cardDTO, ResponseDTO } from './models/models';
 import { STATUS } from './models/constants.core';
 //import log from 'electron-log';
 //TODO: electron log is not working in preload
@@ -24,16 +24,25 @@ contextBridge.exposeInMainWorld('electronAPI', {
         });
     },
 
-    importFile: async (formData: any): Promise<ResponseDTO> => { 
+    importFile: async (formData: any): Promise<ResponseDTO<void>> => { 
         try {
             return ipcRenderer.invoke('import-file', formData);
         } catch (err) {
             console.error("Error ", err)
-            return { status: STATUS.INTERNAL_SERVER_ERROR, message: 'Internal Server Error' } as ResponseDTO;
+            return { status: STATUS.INTERNAL_SERVER_ERROR, message: 'Internal Server Error' } as ResponseDTO<void>;
         }
     },
     getFilePath: (file: File): string => { 
         return webUtils.getPathForFile(file);
+    },
+
+    getNetWorth: async (): Promise<ResponseDTO<cardDTO>> => { 
+        try {
+            return ipcRenderer.invoke('get-net-worth');
+        } catch (err) {
+            console.error("Error ", err)
+            return { status: STATUS.INTERNAL_SERVER_ERROR, message: 'Internal Server Error' } as ResponseDTO<cardDTO>;
+        }
     },
 
     //TODO: this should be removed

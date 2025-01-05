@@ -64,11 +64,11 @@ export function ImportDialog({
         }
 
         try {
-            const response: ResponseDTO = await window.electronAPI.importFile(formData);
+            const response: ResponseDTO<void> = await window.electronAPI.importFile(formData);
 
             log.debug(response);
             if (response.status !== STATUS.OK) {
-                setError(response.message);
+                setError(response?.message?? "An error occurred during the file upload.");
             } else {
                 toast({
                     title: "Success!",

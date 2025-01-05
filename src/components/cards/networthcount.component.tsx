@@ -1,15 +1,23 @@
 import { ChartNoAxesCombined } from "lucide-react";
 import { CountViewModel } from "../viewmodels/viewmodels";
 import CountCard from "./countcard.component";
+import { STATUS } from "@/models/constants.core";
+
 
 const data: CountViewModel = {
     title: "Net Worth",
-    amount: 45321.12,
-    diff: 12.20,
+    amount: 0,
+    diff: 0,
     isDiffPercentage: true,
     unit: "$",
     isUnitPrefix: true,
     icon: ChartNoAxesCombined
+};
+
+const response = await window.electronAPI.getNetWorth();
+if (response.status === STATUS.OK && response.data) {
+    data.amount = response.data.amount;
+    data.diff = response.data.diff;
 }
 
 export default function NetworthCount() {

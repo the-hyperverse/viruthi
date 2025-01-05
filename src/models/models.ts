@@ -46,8 +46,12 @@ export interface Holding {
 
 
 /* DTO */
-export interface ResponseDTO{
+export interface ResponseDTO<T> {
     status: number;
-    message: string;
-    data?: any;
+    message?: string;
+    data: T;
+}
+export interface cardDTO {
+    amount: number;
+    diff: number;
 }

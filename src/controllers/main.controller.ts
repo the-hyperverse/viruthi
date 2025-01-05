@@ -2,7 +2,9 @@ import { ipcMain } from 'electron';
 import { TableService } from '../services/tables/table.service';
 import * as equityController from './equity.controller';
 import { ImportService } from '../services/import.service';
-import { ResponseDTO } from '@/models/models';
+import { cardDTO, ResponseDTO } from '@/models/models';
+import { HoldingService } from '../services/holding.service';
+import { STATUS } from '../models/constants.core';
 
 export function registerRoutes() {
 
@@ -21,9 +23,14 @@ export function registerRoutes() {
         event.reply('getMarketsReply', data);
     });
 
-    ipcMain.handle('import-file', (event, formData: any): Promise<ResponseDTO> => {
+    ipcMain.handle('import-file', (event, formData: any): Promise<ResponseDTO<void>> => {
         //TODO: validate file name
         return ImportService.getInstance().importFile(formData);
+    });
+
+    ipcMain.handle('get-net-worth', async (event): Promise<ResponseDTO<cardDTO>> => {
+        const data = await HoldingService.getInstance().getNetWorth();
+        return { status: STATUS.OK, message:"", data: data } as ResponseDTO<cardDTO>;
     });
 
     equityController.registerRoutes();
