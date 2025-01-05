@@ -85,7 +85,7 @@ export class DBService {
                 result = result && await new Promise((resolve, reject) => {
                     this.db.exec(iQs[i], (err: Error | null) => {
                         if (err) {
-                            // log.debug('iQ: ' + iQs[i]);
+                            log.debug('iQ: ' + iQs[i]);
                             log.error('Failed row bulk insert:', err?.message)
                             resolve(false);
                         } else {
