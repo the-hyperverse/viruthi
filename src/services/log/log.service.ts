@@ -3,6 +3,7 @@ import log from 'electron-log/main';
 
 export function initializeLogs() {
     // Initialize it for renderer process
+    // C:\Users\Admin\AppData\Roaming\Electron\logs
     log.initialize();
 
     // Configuring logger

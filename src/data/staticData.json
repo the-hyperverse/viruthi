@@ -78,5 +78,43 @@
             "symbol": "US",
             "currency": "USD"
         }
-    ]
+    ],
+    "marketKeys": {
+        "IN": 1,
+        "US": 2
+    },
+    "importTypes": [
+        {
+            "id": 1,
+            "name": "IN Stocks"
+        },
+        {
+            "id": 2,
+            "name": "IN CDSL Holdings"
+        },
+        {
+            "id": 3,
+            "name": "IN NSDL Holdings"
+        },
+        {
+            "id": 4,
+            "name": "US Versted Holdings export"
+        },
+        {
+            "id": 5,
+            "name": "Gold Holdings"
+        },
+        {
+            "id": 6,
+            "name": "IN Mutual Funds"
+        }
+    ],
+    "importTypeKeys": {
+        "IN_STOCKS": 1,
+        "IN_CDSL_HOLDINGS": 2,
+        "IN_NSDL_HOLDINGS": 3,
+        "US_VESTED_HOLDINGS_EXPORT": 4,
+        "GOLD_HOLDINGS": 5,
+        "IN_MUTUAL_FUNDS": 6
+    }
 }

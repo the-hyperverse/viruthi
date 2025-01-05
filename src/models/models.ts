@@ -43,3 +43,11 @@ export interface Holding {
     createdBy: number;
     createdOn: Date;
 }
+
+
+/* DTO */
+export interface ResponseDTO{
+    status: number;
+    message: string;
+    data?: any;
+}

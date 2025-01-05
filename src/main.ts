@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import { randomBytes } from 'crypto';
 
-import { PRELOAD_JS_PATH, INDEX_HTML_PATH } from './models/constants';
+import { PRELOAD_JS_PATH, INDEX_HTML_PATH } from './models/constants.server';
 import { TableService } from './services/tables/table.service';
 import * as logService from './services/log/log.service';
 import * as controller from './controllers/main.controller';

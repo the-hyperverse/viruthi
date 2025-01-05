@@ -5,14 +5,21 @@ import { createRoot } from 'react-dom/client';
 import { Home } from '@/components/home.component';
 import './assets/css/globals.css'; // Assuming you already have CSS bundled
 import { Dashboard } from '@/components/dashboard.component';
+import { ToastProvider } from '@/components/ui/toast';
+import { Toaster } from '@/components/ui/toaster';
 
 const App = () => {
-  return <h1>Hello from React!</h1>;
+    return (
+        <ToastProvider>
+            <Dashboard />
+            <Toaster />
+        </ToastProvider>
+    );
 };
 
 const container = document.getElementById('app');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
-root.render(<Dashboard />);
+root.render(<App />);
 
 
 // // Retrieve data

@@ -7,6 +7,8 @@ declare global {
             getEquities: () => void;
             replyGetEquities: (callback: (event: Electron.IpcRendererEvent, rows: AssetClass[]) => void) => void;
             getNonce: () => void;
+            importFile: (formData: any) => Promise<ResponseDTO>;
+            getFilePath: (file: File) => string;
         };
     }
 }

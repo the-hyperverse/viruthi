@@ -83,34 +83,54 @@ export class EquityTableService {
 
     public insert(equity: Equity, callback: (err: Error | null) => void): void {
         this.dbService.insertRow(
-            `INERT INTO ${EquityTableService.TABLE_NAME} (
+            `INSERT INTO ${EquityTableService.TABLE_NAME} (
                 ${EquityTableService.ISIN},
                 ${EquityTableService.NAME},
                 ${EquityTableService.ISIN_NAME},
                 ${EquityTableService.MARKET_ID},
-                ${EquityTableService.SYMBOL},
-                ${EquityTableService.ISIN}
-            ) values (?, ?, ?, ?, ?, ?);`,
+                ${EquityTableService.SYMBOL}
+            ) values (?, ?, ?, ?, ?);`,
             Object.values(equity),
             callback
         );
     }
 
-    public insertBulk(equities: Equity[]): void {
-        this.dbService.insertRows(
-            `INERT INTO ${EquityTableService.TABLE_NAME} (
+    public async insertBulk(equities: Equity[]): Promise<boolean> {
+        let iQs: string[] = [];
+
+        for (let i = 0; i < equities.length; i += 200) {
+
+            let iQ = `INSERT INTO ${EquityTableService.TABLE_NAME} (
                 ${EquityTableService.ISIN},
                 ${EquityTableService.NAME},
                 ${EquityTableService.ISIN_NAME},
                 ${EquityTableService.MARKET_ID},
-                ${EquityTableService.SYMBOL},
-                ${EquityTableService.ISIN}
-            ) values (?, ?, ?, ?, ?, ?);`,
-            equities
-        );
+                ${EquityTableService.SYMBOL}
+            ) values `;
+
+            const batch = equities.slice(i, i + 200);
+            for (let j = 0; j < batch.length; j++) {
+                const equity = batch[j];
+                this.sanitise(equity);
+                //TODO: possible SQL injection vulnerability
+                iQ += `('${equity.isin}','${equity.name}','${equity.isinName}',${equity.marketId},'${equity.symbol}')${j === batch.length - 1 ? ';' : ','}`;
+            }
+
+            iQs.push(iQ);
+        }
+
+        return this.dbService.insertRows(iQs);
     }
 
     public delete(id: number): void {
 
     }
+
+    private sanitise(equity: Equity) {
+        if (equity.isin) equity.isin = equity.isin.replace(/['"\\]/g, '');
+        if (equity.name) equity.name = equity.name.replace(/['"\\]/g, '');
+        if (equity.isinName) equity.isinName = equity.isinName.replace(/['"\\]/g, '');
+        if (equity.symbol) equity.symbol = equity.symbol.replace(/['"\\]/g, '');
+    }
 }
+

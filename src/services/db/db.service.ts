@@ -1,6 +1,6 @@
 import sqlite3 from 'sqlite3';
 import log from 'electron-log/main';
-import { DB_PATH } from '../../models/constants';
+import { DB_PATH } from '../../models/constants.server';
 
 export class DBService {
     private static readonly BATCH_SIZE = 1000;
@@ -66,7 +66,7 @@ export class DBService {
         this.db.run(iQ, valList, callback);
     }
 
-    public insertRows(iQ: string, models: any[]): void {
+    public async insertRows(iQs: string[]): Promise<boolean> {
         // var params = [[1,2],[3,4],[5,6],[7,8]];
         // this.db.serialize(() => {
         //     this.db.run("begin transaction");
@@ -78,10 +78,28 @@ export class DBService {
         //     this.db.run("commit");
         // });
 
-        
-        this.insertInBatches(iQ, models).then(() => {
-            console.log('All batches processed');
-        });
+        let result = true;
+
+        for (let i = 0; i < iQs.length; i++) {
+            try {
+                result = result && await new Promise((resolve, reject) => {
+                    this.db.exec(iQs[i], (err: Error | null) => {
+                        if (err) {
+                            // log.debug('iQ: ' + iQs[i]);
+                            log.error('Failed row bulk insert:', err?.message)
+                            resolve(false);
+                        } else {
+                            resolve(true);
+                        }
+                    });
+                });
+            } catch (error) {
+                result = false;
+                log.error('Failed row bulk insert 2:', (error as Error).message);
+            }
+        }
+       
+        return result;
     }
 
     public updateRow(uQ: string, valList: any[]): void {
@@ -113,21 +131,4 @@ export class DBService {
             });
         }
     }
-
-    private async insertInBatches(iQ: string, models: any[]): Promise<void> {
-        for (let i = 0; i < models.length; i += DBService.BATCH_SIZE) {
-            const batch = models.slice(i, i + DBService.BATCH_SIZE);
-            this.db.serialize(() => {
-                this.db.run("begin transaction");
-    
-                batch.forEach(row => {
-                    this.db.run(iQ, Object.values(row), (err: Error | null) => {
-                        log.error('Failed to insert a row in bulk insert:', err?.message)
-                    });
-                });
-    
-                this.db.run("commit");
-            });
-        }
-    };
 }

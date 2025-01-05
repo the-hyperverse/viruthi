@@ -123,7 +123,7 @@ export class HoldingTableService {
 
     public insert(holding: Holding, callback: (err: Error | null) => void): void {
         this.dbService.insertRow(
-            `INERT INTO ${HoldingTableService.TABLE_NAME} (
+            `INSERT INTO ${HoldingTableService.TABLE_NAME} (
                 ${HoldingTableService.MARKET_ID},
                 ${HoldingTableService.ASSET_CLASS_ID},
                 ${HoldingTableService.ASSET_ID},
@@ -139,19 +139,19 @@ export class HoldingTableService {
     }
 
     public insertBulk(holdings: Holding[]): void {
-        this.dbService.insertRows(
-            `INERT INTO ${HoldingTableService.TABLE_NAME} (
-                ${HoldingTableService.MARKET_ID},
-                ${HoldingTableService.ASSET_CLASS_ID},
-                ${HoldingTableService.ASSET_ID},
-                ${HoldingTableService.RATE},
-                ${HoldingTableService.QUANTITY},
-                ${HoldingTableService.HOLDING_DATE},
-                ${HoldingTableService.CREATEDBY},
-                ${HoldingTableService.CREATEDON}
-            ) values (?, ?, ?, ?, ?, ?, ?, ?);`,
-            holdings.map(({ id, ...rest }) => rest)
-        );
+        // this.dbService.insertRows(
+        //     `INSERT INTO ${HoldingTableService.TABLE_NAME} (
+        //         ${HoldingTableService.MARKET_ID},
+        //         ${HoldingTableService.ASSET_CLASS_ID},
+        //         ${HoldingTableService.ASSET_ID},
+        //         ${HoldingTableService.RATE},
+        //         ${HoldingTableService.QUANTITY},
+        //         ${HoldingTableService.HOLDING_DATE},
+        //         ${HoldingTableService.CREATEDBY},
+        //         ${HoldingTableService.CREATEDON}
+        //     ) values (?, ?, ?, ?, ?, ?, ?, ?);`,
+        //     holdings.map(({ id, ...rest }) => rest)
+        // );
     }
 
     public delete(id: number): void {

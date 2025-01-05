@@ -52,6 +52,7 @@
         "autoprefixer": "^10.4.20",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
+        "csv-parser": "^3.1.0",
         "date-fns": "^3.6.0",
         "electron-log": "^5.2.0",
         "embla-carousel-react": "^8.3.0",
