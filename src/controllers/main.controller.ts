@@ -33,6 +33,16 @@ export function registerRoutes() {
         return { status: STATUS.OK, message:"", data: data } as ResponseDTO<cardDTO>;
     });
 
+    ipcMain.handle('get-equity-holdings', async (event): Promise<ResponseDTO<any[]>> => {
+        const data = await HoldingService.getInstance().getEquities();
+        return { status: STATUS.OK, message: "", data: data } as ResponseDTO<any[]>;
+    });
+
+    ipcMain.handle('get-mutual-fund-holdings', async (event): Promise<ResponseDTO<any[]>> => {
+        const data = await HoldingService.getInstance().getMutualFunds();
+        return { status: STATUS.OK, message: "", data: data } as ResponseDTO<any[]>;
+    });
+
     equityController.registerRoutes();
 }
 

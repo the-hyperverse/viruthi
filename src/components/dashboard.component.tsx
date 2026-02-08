@@ -16,6 +16,7 @@ import "@/assets/css/globals.css";
 import { AssetDistribution } from "./charts/pie/asset-dist.component"
 import { WealthGrowthGraph } from "./charts/graph/wealthgrowth.component"
 import Stocks from "./charts/table/stocks.component"
+import MutualFunds from "./charts/table/mutualfunds.component"
 import NetworthCount from "./cards/networthcount.component"
 import INStocksCount from "./cards/incount.component"
 import USStocksCount from "./cards/uscount.component"
@@ -57,6 +58,9 @@ export function Dashboard() {
 
 					<div className="grid gap-4 pt-2 md:grid-cols-1 md:gap-8 lg:grid-cols-1">
 						<Stocks />
+					</div>
+					<div className="grid gap-4 pt-2 md:grid-cols-1 md:gap-8 lg:grid-cols-1">
+						<MutualFunds />
 					</div>
 				</main>
 			</SidebarInset>

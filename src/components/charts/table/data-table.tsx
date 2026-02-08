@@ -40,176 +40,18 @@ import {
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
-}
-
-
-
-const r = {
-    total: 10,
-    data: [
-        {
-            isin: "INE123A01016",
-            name: "Reliance Industries",
-            marketId: 1,
-            symbol: "RELIANCE",
-            holding: 10,
-            rate: 200,
-            amount: 2000, // holding * rate
-            holdingDiff: 2, // Example difference from the previous month
-            rateDiff: 10, // Example difference from the previous month
-            amountDiff: 200, // Example difference from the previous month
-            investedAmount: 1000, // Example of additional data
-        },
-        {
-            isin: "INE467B01029",
-            name: "Tata Consultancy Services",
-            marketId: 1,
-            symbol: "TCS",
-            holding: 15,
-            rate: 200,
-            amount: 3000, // holding * rate
-            holdingDiff: 1,
-            rateDiff: 5,
-            amountDiff: 75,
-            investedAmount: 2000,
-        },
-        {
-            isin: "INE062A01020",
-            name: "State Bank of India",
-            marketId: 1,
-            symbol: "SBIN",
-            holding: 20,
-            rate: 75,
-            amount: 1500, // holding * rate
-            holdingDiff: -2,
-            rateDiff: -5,
-            amountDiff: -150,
-            investedAmount: 500,
-        },
-        {
-            isin: "INE154A01025",
-            name: "Hindustan Unilever",
-            marketId: 1,
-            symbol: "HINDUNILVR",
-            holding: 5,
-            rate: 100,
-            amount: 500, // holding * rate
-            holdingDiff: 1,
-            rateDiff: 0,
-            amountDiff: 100,
-            investedAmount: 1000,
-        },
-        {
-            isin: "INE090A01021",
-            name: "Infosys",
-            marketId: 1,
-            symbol: "INFY",
-            holding: 25,
-            rate: 100,
-            amount: 2500, // holding * rate
-            holdingDiff: 0,
-            rateDiff: 5,
-            amountDiff: 125,
-            investedAmount: 2000,
-        },
-        {
-            isin: "US0378331005",
-            name: "Apple Inc.",
-            marketId: 2,
-            symbol: "AAPL",
-            holding: 1,
-            rate: 10,
-            amount: 10, // holding * rate
-            holdingDiff: 0,
-            rateDiff: 0,
-            amountDiff: 0,
-            investedAmount: 1030,
-        },
-        {
-            isin: "US0231351067",
-            name: "Amazon.com Inc.",
-            marketId: 2,
-            symbol: "AMZN",
-            holding: 2,
-            rate: 2,
-            amount: 4, // holding * rate
-            holdingDiff: -1,
-            rateDiff: 1,
-            amountDiff: -1,
-            investedAmount: 2300,
-        },
-        {
-            isin: "US5949181045",
-            name: "Microsoft Corp.",
-            marketId: 2,
-            symbol: "MSFT",
-            holding: 1,
-            rate: 11,
-            amount: 11, // holding * rate
-            holdingDiff: 0,
-            rateDiff: 1,
-            amountDiff: 1,
-            investedAmount: 300,
-        },
-        {
-            isin: "US67066G1040",
-            name: "NVIDIA Corp.",
-            marketId: 2,
-            symbol: "NVDA",
-            holding: 1,
-            rate: 8,
-            amount: 8, // holding * rate
-            holdingDiff: 0,
-            rateDiff: -2,
-            amountDiff: -2,
-            investedAmount: 10,
-        },
-        {
-            isin: "US88160R1014",
-            name: "Tesla Inc.",
-            marketId: 2,
-            symbol: "TSLA",
-            holding: 18,
-            rate: 8,
-            amount: 144, // holding * rate
-            holdingDiff: 2,
-            rateDiff: 1,
-            amountDiff: 26,
-            investedAmount: 156,
-        },
-    ]
+    data: TData[]
 }
 
 export function DataTable<TData, TValue>({
     columns,
+    data,
 }: DataTableProps<TData, TValue>) {
-    const [data, setData] = React.useState<TData[]>([])
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
     const [pagination, setPagination] = React.useState({ pageIndex: 0, pageSize: 10 })
-    const [totalItems, setTotalItems] = React.useState(0)
-
-    const fetchData = React.useCallback(async () => {
-        const params = new URLSearchParams({
-            page: (pagination.pageIndex + 1).toString(),
-            per_page: pagination.pageSize.toString(),
-            sort: sorting.length > 0 ? sorting[0].id : 'email',
-            order: sorting.length > 0 ? (sorting[0].desc ? 'desc' : 'asc') : 'asc',
-            filter: columnFilters.find(filter => filter.id === 'email')?.value as string || '',
-        })
-
-        // const response = await fetch(`/api/payments?${params}`)
-        // const result = await response.json()
-        const result = r
-        setData(result.data as TData[])
-        setTotalItems(result.total)
-    }, [pagination, sorting, columnFilters])
-
-    React.useEffect(() => {
-        fetchData()
-    }, [fetchData])
 
     const table = useReactTable({
         data,
@@ -229,8 +71,6 @@ export function DataTable<TData, TValue>({
             rowSelection,
             pagination,
         },
-        manualPagination: true,
-        pageCount: Math.ceil(totalItems / pagination.pageSize),
     })
 
     return (
@@ -315,7 +155,7 @@ export function DataTable<TData, TValue>({
             </div>
             <div className="flex items-center justify-between space-x-2 py-4">
                 <div className="flex-1 text-sm text-muted-foreground">
-                    Showing {table.getRowModel().rows.length} of {totalItems} results
+                    Showing {table.getRowModel().rows.length} of {data.length} results
                 </div>
                 <div className="flex items-center space-x-6 lg:space-x-8">
                     <div className="flex items-center space-x-2">
@@ -385,4 +225,3 @@ export function DataTable<TData, TValue>({
         </div>
     )
 }
-

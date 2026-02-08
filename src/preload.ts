@@ -45,6 +45,24 @@ contextBridge.exposeInMainWorld('electronAPI', {
         }
     },
 
+    getEquityHoldings: async (): Promise<ResponseDTO<any[]>> => {
+        try {
+            return ipcRenderer.invoke('get-equity-holdings');
+        } catch (err) {
+            console.error("Error ", err)
+            return { status: STATUS.INTERNAL_SERVER_ERROR, message: 'Internal Server Error' } as ResponseDTO<any[]>;
+        }
+    },
+
+    getMutualFundHoldings: async (): Promise<ResponseDTO<any[]>> => {
+        try {
+            return ipcRenderer.invoke('get-mutual-fund-holdings');
+        } catch (err) {
+            console.error("Error ", err)
+            return { status: STATUS.INTERNAL_SERVER_ERROR, message: 'Internal Server Error' } as ResponseDTO<any[]>;
+        }
+    },
+
     //TODO: this should be removed
     getNonce: async () => {
         return ipcRenderer.invoke('get-nonce');

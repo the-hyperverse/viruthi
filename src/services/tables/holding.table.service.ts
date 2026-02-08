@@ -34,21 +34,21 @@ export class HoldingTableService {
             ${HoldingTableService.ID} INTEGER PRIMARY KEY AUTOINCREMENT, 
             ${HoldingTableService.MARKET_ID} INTEGER NOT NULL,
             ${HoldingTableService.ASSET_CLASS_ID} INTEGER NOT NULL,
-            ${HoldingTableService.ASSET_ID} VARCHAR(2) NOT NULL,
+            ${HoldingTableService.ASSET_ID} VARCHAR(20) NOT NULL,
             ${HoldingTableService.RATE} DECIMAL(10, 2) NOT NULL,
-            ${HoldingTableService.QUANTITY} DECIMAL(10, 10) NOT NULL,
+            ${HoldingTableService.QUANTITY} DECIMAL(20, 10) NOT NULL,
             ${HoldingTableService.HOLDING_DATE} DATETIME NOT NULL,
             ${HoldingTableService.CREATEDBY} INTEGER NOT NULL,
             ${HoldingTableService.CREATEDON} DATETIME NOT NULL
         );`;
     }
 
-    public getAll(offset: number, limit: number, callback: (rows: [] | undefined) => void): void {
+    public getAll(offset: number, limit: number, callback: (rows: any[] | undefined) => void): void {
         this.dbService.getRows(
             `SELECT * FROM ${HoldingTableService.TABLE_NAME} limit ? offset ?;`,
             [limit, offset],
             (err, rows) => {
-                if (!err) {
+                if (err) {
                     log.error(err);
                     return;
                 }
@@ -57,12 +57,12 @@ export class HoldingTableService {
         )
     }
 
-    public getById(id: number, callback: (rows: [] | undefined) => void): void {
+    public getById(id: number, callback: (rows: any[] | undefined) => void): void {
         this.dbService.getRows(
             `SELECT * FROM ${HoldingTableService.TABLE_NAME} WHERE ${HoldingTableService.ID} = ? ;`,
             [id],
             (err, rows) => {
-                if (!err) {
+                if (err) {
                     log.error(err);
                     return;
                 }
@@ -74,45 +74,49 @@ export class HoldingTableService {
     public get(
         marketId: number | undefined,
         assetClassId: number | undefined,
-        assetId: number | undefined,
+        assetId: string | undefined,
         holdingDate: Date | undefined,
         callback: (rows: any[] | undefined) => void
     ): void {
 
-        let sql = `SELECT * FROM ${HoldingTableService.TABLE_NAME} WHERE`;
+        let sql = `SELECT * FROM ${HoldingTableService.TABLE_NAME}`;
         let addedFilter = false;
         let params: any[] = [];
+        let whereClause = "";
 
         if (marketId) {
-            sql + ` ${HoldingTableService.MARKET_ID} = ?`;
+            whereClause += ` ${HoldingTableService.MARKET_ID} = ?`;
             params.push(marketId);
             addedFilter = true;
         }
 
         if (assetClassId) {
-            sql + ` ${addedFilter ? 'AND' : ''} ${HoldingTableService.ASSET_CLASS_ID} = ?`;
+            whereClause += ` ${addedFilter ? 'AND' : ''} ${HoldingTableService.ASSET_CLASS_ID} = ?`;
             params.push(assetClassId);
             addedFilter = true;
         }
 
         if (assetId) {
-            sql + ` ${addedFilter ? 'AND' : ''} ${HoldingTableService.ASSET_ID} = ?`;
+            whereClause += ` ${addedFilter ? 'AND' : ''} ${HoldingTableService.ASSET_ID} = ?`;
             params.push(assetId);
             addedFilter = true;
         }
 
         if (holdingDate) {
-            sql + ` ${addedFilter ? 'AND' : ''} ${HoldingTableService.HOLDING_DATE} = ?`;
+            whereClause += ` ${addedFilter ? 'AND' : ''} ${HoldingTableService.HOLDING_DATE} = ?`;
             params.push(holdingDate);
             addedFilter = true;
         }
 
+        if (addedFilter) {
+            sql += ` WHERE ${whereClause}`;
+        }
 
         this.dbService.getRows(
             sql + ';',
             params,
             (err, rows) => {
-                if (!err) {
+                if (err) {
                     log.error(err);
                     return;
                 }
@@ -177,6 +181,10 @@ export class HoldingTableService {
         // holding.name = holding.name.replace(/'/g, "''");
         // holding.isinName = holding.isinName.replace(/'/g, "''");
         // holding.symbol = holding.symbol.replace(/'/g, "''");
+        // Holding usually doesn't have string fields that need escaping except maybe assetId if it's alphanumeric.
+        if (holding.assetId && typeof holding.assetId === 'string') {
+             holding.assetId = holding.assetId.replace(/['"\\]/g, '');
+        }
     }
 
     private formatToSQLiteDate(date: Date): string {

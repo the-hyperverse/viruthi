@@ -9,7 +9,9 @@ declare global {
             getNonce: () => void;
             importFile: (formData: any) => Promise<ResponseDTO<void>>;
             getFilePath: (file: File) => string;
-            getNetWorth: () => Promise<Response<cardDTO>>;
+            getNetWorth: () => Promise<ResponseDTO<cardDTO>>;
+            getEquityHoldings: () => Promise<ResponseDTO<any[]>>;
+            getMutualFundHoldings: () => Promise<ResponseDTO<any[]>>;
         };
     }
 }

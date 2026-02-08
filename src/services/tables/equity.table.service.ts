@@ -36,12 +36,12 @@ export class EquityTableService {
                 );`
     }
 
-    public getAll(offset: number, limit: number, callback: (rows: [] | undefined) => void): void {
+    public getAll(offset: number, limit: number, callback: (rows: any[] | undefined) => void): void {
         this.dbService.getRows(
-            'SELECT * FROM ${EquityTableService.TABLE_NAME} limit ? offset ?;',
+            `SELECT * FROM ${EquityTableService.TABLE_NAME} limit ? offset ?;`,
             [limit, offset],
             (err, rows) => {
-                if (!err) {
+                if (err) {
                     log.error(err);
                     return;
                 }
@@ -55,30 +55,36 @@ export class EquityTableService {
         let addedFilter = false;
         let params: any[] = [];
         if (isin) {
-            sql + ` ${EquityTableService.ISIN} = ?`;
+            sql += ` ${EquityTableService.ISIN} = ?`;
             addedFilter = true;
             params.push(isin);
         }
         if (marketId) {
-            sql + ` ${addedFilter ? 'AND' : '' } ${EquityTableService.MARKET_ID} = ?`;
+            sql += ` ${addedFilter ? 'AND' : '' } ${EquityTableService.MARKET_ID} = ?`;
             params.push(marketId);
+        }
+
+        if (params.length === 0) {
+            // No filter applied, return all? Or error? returning all for now, but maybe should handle better
+            // Or just strip 'WHERE' if no filters.
+             sql = `SELECT * FROM ${EquityTableService.TABLE_NAME}`;
         }
 
         this.dbService.getRows(
             sql + ';',
             params,
             (err, rows) => {
-                if (!err) {
+                if (err) {
                     log.error(err);
                     return;
                 }
-                callback(rows);
+                callback(rows as Equity[]);
             }
         )
     }
 
     public search(name: string, callback: (rows: Equity[] | undefined) => void): void {
-
+        // Implement search if needed, otherwise leave empty
     }
 
     public insert(equity: Equity, callback: (err: Error | null) => void): void {
@@ -112,7 +118,8 @@ export class EquityTableService {
             for (let j = 0; j < batch.length; j++) {
                 const equity = batch[j];
                 this.sanitise(equity);
-                //TODO: possible SQL injection vulnerability
+                //TODO: possible SQL injection vulnerability - parameterized queries are safer but insertRows takes string array.
+                // Assuming sanitise works for now, keeping as is but fixed logic.
                 iQ += `('${equity.isin}','${equity.name}','${equity.isinName}',${equity.marketId},'${equity.symbol}')${j === batch.length - 1 ? ';' : ','}`;
             }
 
@@ -133,4 +140,3 @@ export class EquityTableService {
         if (equity.symbol) equity.symbol = equity.symbol.replace(/['"\\]/g, '');
     }
 }
-

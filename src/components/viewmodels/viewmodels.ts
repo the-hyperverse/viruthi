@@ -1,4 +1,4 @@
-import { Equity } from "@/models/models"
+import { Equity, MutualFund } from "@/models/models"
 
 export interface UserViewModel {
     name: string,
@@ -43,6 +43,16 @@ export interface AssetDistributionViewModel {
 }
 
 export interface EquityHoldingViewModel extends Equity {
+    holding: number,
+    holdingDiff: number,
+    rate: number,
+    rateDiff: number,
+    amount: number,
+    amountDiff: number,
+    investedAmount: number
+}
+
+export interface MutualFundHoldingViewModel extends MutualFund {
     holding: number,
     holdingDiff: number,
     rate: number,

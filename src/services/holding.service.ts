@@ -1,13 +1,19 @@
 import log from 'electron-log/main';
 import { DBService } from "./db/db.service";
 import { HoldingTableService as HTS } from "./tables/holding.table.service";
+import { EquityTableService as ETS } from "./tables/equity.table.service";
+import { MutualFundTableService as MFTS } from "./tables/mf.table.service";
 import staticData from "../data/staticData.json";
 import { cardDTO } from '@/models/models';
+import { EquityHoldingViewModel, MutualFundHoldingViewModel } from '@/components/viewmodels/viewmodels';
 
 export class HoldingService {
     private static instance: HoldingService;
+    private dbService: DBService;
 
-    private constructor() { }
+    private constructor() {
+        this.dbService = DBService.getInstance();
+    }
 
     public static getInstance() {
         if (!HoldingService.instance) {
@@ -77,6 +83,102 @@ export class HoldingService {
             }).catch((err) => {
                 log.error(err);
                 reject(err);
+            });
+        });
+    }
+
+    public getEquities(): Promise<EquityHoldingViewModel[]> {
+        return new Promise((resolve, reject) => {
+            const sql = `
+                SELECT
+                    h.${HTS.MARKET_ID},
+                    h.${HTS.ASSET_ID} as isin,
+                    h.${HTS.RATE},
+                    h.${HTS.QUANTITY},
+                    e.${ETS.NAME},
+                    e.${ETS.ISIN_NAME},
+                    e.${ETS.SYMBOL},
+                    (h.${HTS.RATE} * h.${HTS.QUANTITY}) as amount
+                FROM (
+                    SELECT
+                        *,
+                        ROW_NUMBER() OVER (PARTITION BY ${HTS.ASSET_ID} ORDER BY ${HTS.HOLDING_DATE} DESC) as rn
+                    FROM ${HTS.TABLE_NAME}
+                    WHERE ${HTS.ASSET_CLASS_ID} = 1
+                ) h
+                JOIN ${ETS.TABLE_NAME} e ON h.${HTS.ASSET_ID} = e.${ETS.ISIN}
+                WHERE h.rn = 1
+            `;
+
+            this.dbService.getRows(sql, [], (err, rows) => {
+                if (err) {
+                    log.error(err);
+                    reject(err);
+                    return;
+                }
+
+                const result: EquityHoldingViewModel[] = (rows || []).map((row: any) => ({
+                    isin: row.isin,
+                    name: row.name,
+                    isinName: row.isinName,
+                    marketId: row.marketId,
+                    symbol: row.symbol,
+                    holding: row.quantity,
+                    rate: row.rate,
+                    amount: row.amount,
+                    holdingDiff: 0, // Not implemented
+                    rateDiff: 0, // Not implemented
+                    amountDiff: 0, // Not implemented
+                    investedAmount: row.amount // Assuming cost = current value for now as we lack cost basis
+                }));
+
+                resolve(result);
+            });
+        });
+    }
+
+    public getMutualFunds(): Promise<MutualFundHoldingViewModel[]> {
+        return new Promise((resolve, reject) => {
+            const sql = `
+                SELECT
+                    h.${HTS.MARKET_ID},
+                    h.${HTS.ASSET_ID} as folioNumber,
+                    h.${HTS.RATE},
+                    h.${HTS.QUANTITY},
+                    mf.${MFTS.NAME},
+                    (h.${HTS.RATE} * h.${HTS.QUANTITY}) as amount
+                FROM (
+                    SELECT
+                        *,
+                        ROW_NUMBER() OVER (PARTITION BY ${HTS.ASSET_ID} ORDER BY ${HTS.HOLDING_DATE} DESC) as rn
+                    FROM ${HTS.TABLE_NAME}
+                    WHERE ${HTS.ASSET_CLASS_ID} = 2
+                ) h
+                JOIN ${MFTS.TABLE_NAME} mf ON h.${HTS.ASSET_ID} = mf.${MFTS.FOLIO_NUMBER}
+                WHERE h.rn = 1
+            `;
+
+            this.dbService.getRows(sql, [], (err, rows) => {
+                if (err) {
+                    log.error(err);
+                    reject(err);
+                    return;
+                }
+
+                const result: MutualFundHoldingViewModel[] = (rows || []).map((row: any) => ({
+                    folioNumber: row.folioNumber,
+                    name: row.name,
+                    marketId: row.marketId,
+                    holding: row.quantity,
+                    rate: row.rate,
+                    amount: row.amount,
+                    holdingDiff: 0,
+                    rateDiff: 0,
+                    amountDiff: 0,
+                    investedAmount: row.amount
+                }));
+
+                resolve(result);
             });
         });
     }
